@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 18:51:54 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2024/12/20 19:54:54 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2024/12/20 20:23:26 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	echo(char **av, int flag)
 	i = 2;
 	if (flag == 2)
 		i = 3;
+	while (av[i] && ft_strncmp(av[i], "-n", 2) == 0 && ft_strlen(av[i]) == 2)
+		i++;
 	while (av[i])
 	{
 		printf("%s", av[i]);
@@ -79,18 +81,23 @@ int main(int ac, char **av)
 	char	*path;
 
 	// //cd(av[1]);
-	if (ft_strncmp(av[1], "ls", 2) == 0 && ft_strlen(av[1]) == 2)
+	if (ac != 1 && ft_strncmp(av[1], "ls", 2) == 0 && ft_strlen(av[1]) == 2)
 	{
 			path = "/usr/bin/ls";
 			execv(path, &av[1]);
 	}
-	// if (ac == 3 && ft_strncmp(av[1], "cd", 2) == 0 && ft_strlen(av[1]) == 2)
-	// 	cd(av[2]);
+	if (ac == 3 && ft_strncmp(av[1], "cd", 2) == 0 && ft_strlen(av[1]) == 2)
+ 		cd(av[2]);
 	if (ac > 2 && ft_strncmp(av[1], "echo", 4) == 0 && ft_strlen(av[1]) == 4
 		&& ft_strncmp(av[2], "-n", 2) == 0 && ft_strlen(av[2]) == 2)
 		echo(av, 2);
-	else if (ac > 2 && ft_strncmp(av[1], "echo", 4) == 0 && ft_strlen(av[1]) == 4)
+	else if (ac >= 2 && ft_strncmp(av[1], "echo", 4) == 0 && ft_strlen(av[1]) == 4)
 		echo(av, 1);
+	if (ac >= 2 && ft_strncmp(av[1], "env", 3) == 0 && ft_strlen (av[1]) == 3)
+		{
+			path = "/usr/bin/env";
+			execv(path, &av[1]);
+		}
 	//pwd();
 	// path = "/usr/bin/ls";
 	// execv(path, &av[1]);
