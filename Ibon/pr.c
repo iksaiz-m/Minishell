@@ -108,10 +108,15 @@ char	**ft_split(char const *s, char c)
 	return (result);
 }
 
-void	pwd(void)
+void	pwd(int argc)
 {
 	char	*pwd;
 
+    if (argc > 1)
+    {
+        printf("pwd: too many arguments\n");
+        return ;
+    }
 	pwd = getcwd(NULL, 0);
     printf("%s\n", pwd);
 }
@@ -224,8 +229,8 @@ void    init_shell(int argc, char **argv)
 	}
 	else if (argc == 2 && ft_strncmp(argv[0], "cd", 2) == 0 && ft_strlen(argv[0]) == 2)
  		cd(argv[2]);
-	else if (argc == 1 && ft_strncmp(argv[0], "pwd", 2) == 0 && ft_strlen(argv[0]) == 3)
- 		pwd();
+	else if (ft_strncmp(argv[0], "pwd", 2) == 0 && ft_strlen(argv[0]) == 3)
+ 		pwd(argc);
     else
         printf("zsh: command not found: %s\n", argv[0]);
     return ;
