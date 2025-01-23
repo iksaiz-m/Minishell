@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pr.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iboiraza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/22 19:43:32 by iboiraza          #+#    #+#             */
+/*   Updated: 2025/01/22 19:43:35 by iboiraza         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	free_split(char **argv)
@@ -131,6 +143,7 @@ void	cd(char *av)
 	char	*path;
 	char	*pwd;
 
+	pwd = NULL;
 	//printf("av: %s\n", av);
 	path = av;
 	//pwd = getcwd(NULL, 0);
@@ -143,7 +156,7 @@ void	cd(char *av)
 }
 	else
 		pwd = getcwd(NULL, 0);
-	//printf("%s\n", pwd);
+	printf("%s\n", pwd);
 	//ls(path, av);
 }
 
@@ -206,34 +219,105 @@ int	ft_strlen (char *s)
 	return (i);
 }
 
-void    init_shell(int argc, char **argv)
+int	export_action(int argc, char **argv, int flag)
 {
-    char	*path;
+    char	var_name[128];
+    int		var_value[128];
+	int		i;
+
+	flag = 0;
+	i = 0;
+	if (argc == 0)
+		printf("h\n");
+	if (ft_strncmp(argv[0], "export", 7) == 0)
+	{
+		while (argv[1][i++] != '=')
+			var_name[i] = argv[1][i];
+		i++;
+		while (argv[1][i++])
+			var_value[i] = argv[1][i];
+		printf ("%s=%ls\n", var_name, var_value);
+	}
+	else
+		flag = 1;
+	return (flag);
+}
+
+int	fork_actions(int argc, char **argv, int flag)
+{
+	pid_t	pid;
+	char	*path;
 
 	if (ft_strncmp(argv[0], "ls", 2) == 0 && ft_strlen(argv[0]) == 2)
 	{
+		pid = fork();
+		if (pid == 0)
+		{
 			path = "/usr/bin/ls";
 			execv(path, &argv[0]);
+			exit(0);
+		}
+		wait(NULL);
 	}
-	else if (argc == 2 && ft_strncmp(argv[0], "cd", 2) == 0 && ft_strlen(argv[0]) == 2)
+	else if (argc >= 1 && ft_strncmp(argv[0], "env", 3) == 0 && ft_strlen (argv[0]) == 3)
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			path = "/usr/bin/env";
+			execv(path, &argv[0]);
+			exit(0);
+		}
+		wait(NULL);
+	}
+	else
+		flag = 1;
+	return (flag);
+}
+
+int	other_actions(int argc, char **argv, int flag)
+{
+	flag = 0;
+	if (argc == 2 && ft_strncmp(argv[0], "cd", 2) == 0 && ft_strlen(argv[0]) == 2)
  		cd(argv[1]);
 	else if (argc > 1 && ft_strncmp(argv[0], "echo", 4) == 0 && ft_strlen(argv[0]) == 4
 		&& ft_strncmp(argv[1], "-n", 2) == 0 && ft_strlen(argv[1]) == 2)
 		echo(argv, 2);
 	else if (argc >= 1 && ft_strncmp(argv[0], "echo", 4) == 0 && ft_strlen(argv[0]) == 4)
 		echo(argv, 1);
-	else if (argc >= 1 && ft_strncmp(argv[0], "env", 3) == 0 && ft_strlen (argv[0]) == 3)
-	{
-		path = "/usr/bin/env";
-		execv(path, &argv[0]);
-	}
 	else if (argc == 2 && ft_strncmp(argv[0], "cd", 2) == 0 && ft_strlen(argv[0]) == 2)
  		cd(argv[2]);
-	else if (ft_strncmp(argv[0], "pwd", 2) == 0 && ft_strlen(argv[0]) == 3)
+	else if (ft_strncmp(argv[0], "pwd", 3) == 0 && ft_strlen(argv[0]) == 3)
  		pwd(argc);
-    else
-        printf("zsh: command not found: %s\n", argv[0]);
+	else
+		flag = 1;
+	return (flag);
+}
+
+void    init_shell(int argc, char **argv)
+{
+	int		flag;
+
+	flag = 0;
+	flag += fork_actions(argc, argv, flag);
+//	printf("%d\n", flag);
+	flag += other_actions(argc, argv, flag);
+	flag += export_action(argc, argv, flag);
+	if (flag == 3)
+        printf("Command not found: %s\n", argv[0]);
     return ;
+}
+
+void    enter(char *line)
+{
+    char    **commands;
+    int     splits;
+    
+    //add_history(line);
+    commands = ft_split (line, ' ');
+    splits = ft_count_splits (line, ' ');
+    init_shell(splits, commands);
+    free_split(commands);
 }
 
 int exist(char *line)
@@ -253,29 +337,31 @@ int exist(char *line)
 int main (void)
 {
 	char	*line;
-    char    **commands;
-    int     splits;
+//    char    **commands;
+//    int     splits;
 
 	while (1)
 	{
         ft_print_user();
-		line = readline(" % ");
+		line = readline(" > ");
         if (exist(line) == 0)
-            printf("");
-		/*if (!line)
-			break;
-		*/if (ft_strncmp(line, "exit", 4) == 0 && ft_strlen(line) == 4)
+            write(1, "\0", 1);
+        /*if (!line)
+			break;*/
+        if (ft_strncmp(line, "exit", 4) == 0 && ft_strlen(line) == 4)
 		{
 			free(line);
 			break;
 		}
         if (exist(line))
+            enter (line);
+/*      if (exist(line))
         {
             commands = ft_split (line, ' ');
             splits = ft_count_splits (line, ' ');
             init_shell(splits, commands);
             free_split(commands);
-        }
+        }*/
         free (line);
 	}
     printf("\033[31mFin.\033[0m\n");
