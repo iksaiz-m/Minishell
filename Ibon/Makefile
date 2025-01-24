@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: iboiraza <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/21 11:25:51 by iboiraza          #+#    #+#              #
-#    Updated: 2025/01/21 11:25:52 by iboiraza         ###   ########.fr        #
+#    Updated: 2025/01/24 20:15:14 by iksaiz-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ READLINE	= -lreadline
 NAME		= minishell
 RM			= rm -rf
 
-CFILES = pr.c
+CFILES = pr.c builtins.c init_shell.c split.c utils.c
 
 OFILES = $(CFILES:.c=.o)
 
