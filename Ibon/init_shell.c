@@ -6,17 +6,18 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:11:59 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/01/24 19:19:12 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/01/25 19:08:48 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	export_action(int argc, char **argv, int flag)
+int	export_action(int argc, char **argv)
 {
 	char	var_name[128];
 	int		var_value[128];
 	int		i;
+	int		flag;
 
 	flag = 0;
 	i = 0;
@@ -41,7 +42,7 @@ int	fork_actions(int argc, char **argv, int flag)
 	pid_t	pid;
 	char	*path;
 
-	if (ft_strncmp(argv[0], "ls", 2) == 0 && ft_strlen(argv[0]) == 2)
+	if (ft_strncmp(argv[0], "ls", 2) == 0 && !argv[0][2])
 	{
 		pid = fork();
 		if (pid == 0)
@@ -52,7 +53,7 @@ int	fork_actions(int argc, char **argv, int flag)
 		}
 		wait(NULL);
 	}
-	else if (argc >= 1 && ft_strncmp(argv[0], "env", 3) == 0 && ft_strlen (argv[0]) == 3)
+	else if (argc == 1 && ft_strncmp(argv[0], "env", 3) == 0 && !argv[0][3])
 	{
 		pid = fork();
 		if (pid == 0)
@@ -63,26 +64,37 @@ int	fork_actions(int argc, char **argv, int flag)
 		}
 		wait(NULL);
 	}
+	else if (argc >= 1 && ft_strncmp(argv[0], "export", 6) == 0 && !argv[0][6])
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			path = "/usr/bin/export";
+			execv(path, &argv[0]);
+			exit(0);
+		}
+		wait(NULL);
+	}
 	else
 		flag = 1;
 	return (flag);
 }
 
-int	other_actions(int argc, char **argv, int flag)
+int	other_actions(int argc, char **argv)
 {
+	int	flag;
+
 	flag = 0;
-	if (argc == 2 && ft_strncmp(argv[0], "cd", 2) == 0 && ft_strlen(argv[0]) == 2)
-		cd(argv[1]);
-	else if (argc > 1 && ft_strncmp(argv[0], "echo", 4) == 0 && ft_strlen(argv[0]) == 4
-		&& ft_strncmp(argv[1], "-n", 2) == 0 && ft_strlen(argv[1]) == 2)
+	if (argc > 1 && ft_strncmp(argv[0], "echo", 4) == 0 && !argv[0][4]
+		&& ft_strncmp(argv[1], "-n", 2) == 0 && !argv[1][2])
 		echo(argv, 2);
-	else if (argc >= 1 && ft_strncmp(argv[0], "echo", 4) == 0 && ft_strlen(argv[0]) == 4)
+	else if (argc >= 1 && ft_strncmp(argv[0], "echo", 4) == 0 && !argv[0][4])
 		echo(argv, 1);
-	else if (argc == 1 && ft_strncmp(argv[0], "cd", 2) == 0 && ft_strlen(argv[0]) == 2)
+	else if (argc == 1 && ft_strncmp(argv[0], "cd", 2) == 0 && !argv[0][2])
 		cd(argv[0]);
-	else if (argc == 2 && ft_strncmp(argv[0], "cd", 2) == 0 && ft_strlen(argv[0]) == 2)
+	else if (argc == 2 && ft_strncmp(argv[0], "cd", 2) == 0 && !argv[0][2])
 		cd(argv[1]);
-	else if (ft_strncmp(argv[0], "pwd", 3) == 0 && ft_strlen(argv[0]) == 3)
+	else if (ft_strncmp(argv[0], "pwd", 3) == 0 && !argv[0][3])
 		pwd(argc);
 	else
 		flag = 1;
@@ -96,8 +108,8 @@ void	init_shell(int argc, char **argv)
 	flag = 0;
 	flag += fork_actions(argc, argv, flag);
 //	printf("%d\n", flag);
-	flag += other_actions(argc, argv, flag);
-	flag += export_action(argc, argv, flag);
+	flag += other_actions(argc, argv);
+	flag += export_action(argc, argv);
 	if (flag == 3)
 		printf("Command not found: %s\n", argv[0]);
 	return ;

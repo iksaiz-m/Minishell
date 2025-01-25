@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:00:22 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/01/24 19:36:00 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/01/25 18:50:47 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,40 @@ int	ft_strlen(char *s)
 	while (s[i])
 		i++;
 	return (i);
+}
+
+void	*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	size_t				i;
+	unsigned char		*a;
+	const unsigned char	*b;
+
+	i = 0;
+	a = (unsigned char *) dst;
+	b = (unsigned char *) src;
+	if (!a && !b)
+		return (dst);
+	while (i < n)
+	{
+		a[i] = b[i];
+		i++;
+	}
+	return (dst);
+}
+
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*joinstring;
+	size_t	i;
+	size_t	k;
+
+	i = ft_strlen(s1);
+	k = ft_strlen(s2);
+	joinstring = (char *)malloc((i + k + 1) * sizeof(char));
+	if (!joinstring)
+		return (NULL);
+	ft_memcpy(joinstring, s1, i);
+	ft_memcpy(joinstring + i, s2, k);
+	joinstring[i + k] = '\0';
+	return (joinstring);
 }

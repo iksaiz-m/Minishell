@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 08:38:25 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/01/24 20:16:56 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/01/25 18:51:06 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ typedef struct s_mini
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strlen(char *s);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+char	*ft_strjoin(char *s1, char *s2);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
 
 //split.c
 char	**ft_split(char const *s, char c);
@@ -55,9 +57,9 @@ void	pwd(int argc);
 void	cd(char *av);
 
 //init_shell.c
-int		export_action(int argc, char **argv, int flag);
+int		export_action(int argc, char **argv);
 int		fork_actions(int argc, char **argv, int flag);
-int		other_actions(int argc, char **argv, int flag);
+int		other_actions(int argc, char **argv);
 void	init_shell(int argc, char **argv);
 
 #endif

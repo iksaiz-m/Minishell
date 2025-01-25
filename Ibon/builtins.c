@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:04:02 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/01/24 20:24:34 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/01/25 19:00:05 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,23 @@ void	cd(char *av)
 {
 	char	*path;
 	char	*pwd;
+	char	*user;
 
 	pwd = NULL;
 	//printf("av: %s\n", av);
 	if (ft_strncmp(av, "cd", 2) == 0)
-		path = "/home";
+	{
+		path = "/home/";
+		user = getenv("USER");
+		path = ft_strjoin(path, user);
+	}
 	else
 		path = av;
 	//pwd = getcwd(NULL, 0);
 	//printf("%s\n", pwd); 
 	if (chdir(path) == -1)
 	{
-		perror("chdir");
+		perror("cd");
 		return ;
 	/* return error of some sort, don't continue */
 	}

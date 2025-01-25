@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:43:32 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/01/24 20:14:29 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/01/25 18:52:46 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	enter(char *line)
 	char	**commands;
 	int		splits;
 
-	//add_history(line);
+	add_history(line);
 	commands = ft_split(line, ' ');
 	splits = ft_count_splits(line, ' ');
 	init_shell(splits, commands);
