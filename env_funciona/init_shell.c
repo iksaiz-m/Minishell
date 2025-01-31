@@ -37,11 +37,14 @@ int	export_action(int argc, char **argv)
 	return (flag);
 }
 
-int	fork_actions(int argc, char **argv, int flag)
+int	fork_actions(int argc, char **argv, char **envp, int flag)
 {
 	pid_t	pid;
 	char	*path;
+	int		i;
+	int		j;
 
+	i = 0;
 	if (ft_strncmp(argv[0], "ls", 2) == 0 && !argv[0][2])
 	{
 		pid = fork();
@@ -58,8 +61,19 @@ int	fork_actions(int argc, char **argv, int flag)
 		pid = fork();
 		if (pid == 0)
 		{
-			path = "/usr/bin/env";
-			execv(path, &argv[0]);
+			while (envp[i])
+			{
+				j = 0;
+				while(envp[i][j])
+				{
+					write(1, &envp[i][j], 1);
+					j++;
+				}
+				printf("\n");
+				i++;
+			}
+			/*path = "/usr/bin/env";
+			execv(path, &argv[0]);*/
 			exit(0);
 		}
 		wait(NULL);
@@ -101,12 +115,14 @@ int	other_actions(int argc, char **argv)
 	return (flag);
 }
 
-void	init_shell(int argc, char **argv)
+void	init_shell(int argc, char **argv, char **envp)
 {
 	int	flag;
 
+	if (!envp)
+		printf("ok\n");
 	flag = 0;
-	flag += fork_actions(argc, argv, flag);
+	flag += fork_actions(argc, argv, envp, flag);
 //	printf("%d\n", flag);
 	flag += other_actions(argc, argv);
 	flag += export_action(argc, argv);

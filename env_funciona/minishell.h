@@ -58,8 +58,8 @@ void	cd(int argc, char *av);
 
 //init_shell.c
 int		export_action(int argc, char **argv);
-int		fork_actions(int argc, char **argv, int flag);
+int		fork_actions(int argc, char **argv, char **envp, int flag);
 int		other_actions(int argc, char **argv);
-void	init_shell(int argc, char **argv);
+void	init_shell(int argc, char **argv, char **envp);
 
 #endif
