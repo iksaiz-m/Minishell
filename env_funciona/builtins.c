@@ -6,11 +6,17 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:04:02 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/01/25 19:00:05 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/02/06 20:20:27 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// void	unset(char *argv)
+// {
+// 	getenv(argv) = NULL;
+	
+// }
 
 void	pwd(int argc)
 {
@@ -24,11 +30,6 @@ void	pwd(int argc)
 	pwd = getcwd(NULL, 0);
 	printf("%s\n", pwd);
 }
-// void	ls(char *path, char *av)
-// {
-// 	 //readdir(dirp);
-// 	 execv(path, &av);
-// }
 
 void	cd(int argc, char *av)
 {
@@ -78,5 +79,6 @@ void	echo(char **av, int flag)
 	if (flag == 1)
 		printf("\n");
 }
+
 //  Para la comprobacion del -n o cosas asi en vez de usar ft_strlen comprobar que no haya siguiente
 //	while (av[i] && ft_strncmp(av[i], "-n", 2) == 0 && !av[i][3])

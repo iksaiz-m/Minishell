@@ -6,7 +6,7 @@
 #    By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/21 11:25:51 by iboiraza          #+#    #+#              #
-#    Updated: 2025/01/24 20:15:14 by iksaiz-m         ###   ########.fr        #
+#    Updated: 2025/02/06 21:26:52 by iksaiz-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ READLINE	= -lreadline
 NAME		= minishell
 RM			= rm -rf
 
-CFILES = main.c builtins.c init_shell.c split.c utils.c
+CFILES = main.c builtins.c init_shell.c split.c utils.c exit.c
 
 OFILES = $(CFILES:.c=.o)
 

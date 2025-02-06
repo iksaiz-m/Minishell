@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:11:59 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/01/25 19:08:48 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/02/06 20:02:55 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,36 +58,31 @@ int	fork_actions(int argc, char **argv, char **envp, int flag)
 	}
 	else if (argc == 1 && ft_strncmp(argv[0], "env", 3) == 0 && !argv[0][3])
 	{
-		pid = fork();
-		if (pid == 0)
+		while (envp[i])
 		{
-			while (envp[i])
+			j = 0;
+			while(envp[i][j])
 			{
-				j = 0;
-				while(envp[i][j])
-				{
-					write(1, &envp[i][j], 1);
-					j++;
-				}
-				printf("\n");
-				i++;
+				write(1, &envp[i][j], 1);
+				j++;
 			}
-			/*path = "/usr/bin/env";
-			execv(path, &argv[0]);*/
-			exit(0);
+			printf("\n");
+			i++;
 		}
-		wait(NULL);
 	}
 	else if (argc >= 1 && ft_strncmp(argv[0], "export", 6) == 0 && !argv[0][6])
 	{
-		pid = fork();
-		if (pid == 0)
+		while (envp[i])
 		{
-			path = "/usr/bin/export";
-			execv(path, &argv[0]);
-			exit(0);
+			j = 0;
+			while(envp[i][j])
+			{
+				write(1, &envp[i][j], 1);
+				j++;
+			}
+			printf("\n");
+			i++;
 		}
-		wait(NULL);
 	}
 	else
 		flag = 1;
@@ -110,6 +105,8 @@ int	other_actions(int argc, char **argv)
 		cd(argc, argv[1]);
 	else if (ft_strncmp(argv[0], "pwd", 3) == 0 && !argv[0][3])
 		pwd(argc);
+	// else if (ft_strncmp(argv[0], "unset", 5) == 0 && !argv[0][5])
+	// 	unset(argv[1]);
 	else
 		flag = 1;
 	return (flag);
