@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:11:59 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/02/06 20:02:55 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/02/13 19:55:15 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ int	fork_actions(int argc, char **argv, char **envp, int flag)
 	int		j;
 
 	i = 0;
-	if (ft_strncmp(argv[0], "ls", 2) == 0 && !argv[0][2])
+	if ((ft_strncmp(argv[0], "ls", 2) == 0 && !argv[0][2])
+		|| (ft_strncmp(argv[0], "/bin/ls", 7) == 0 && !argv[0][7]))
 	{
 		pid = fork();
 		if (pid == 0)
@@ -61,7 +62,7 @@ int	fork_actions(int argc, char **argv, char **envp, int flag)
 		while (envp[i])
 		{
 			j = 0;
-			while(envp[i][j])
+			while (envp[i][j])
 			{
 				write(1, &envp[i][j], 1);
 				j++;
@@ -70,20 +71,20 @@ int	fork_actions(int argc, char **argv, char **envp, int flag)
 			i++;
 		}
 	}
-	else if (argc >= 1 && ft_strncmp(argv[0], "export", 6) == 0 && !argv[0][6])
-	{
-		while (envp[i])
-		{
-			j = 0;
-			while(envp[i][j])
-			{
-				write(1, &envp[i][j], 1);
-				j++;
-			}
-			printf("\n");
-			i++;
-		}
-	}
+	// else if (argc >= 1 && ft_strncmp(argv[0], "export", 6) == 0 && !argv[0][6])
+	// {
+	// 	while (envp[i])
+	// 	{
+	// 		j = 0;
+	// 		while(envp[i][j])
+	// 		{
+	// 			write(1, &envp[i][j], 1);
+	// 			j++;
+	// 		}
+	// 		printf("\n");
+	// 		i++;
+	// 	}
+	// }
 	else
 		flag = 1;
 	return (flag);
@@ -105,8 +106,8 @@ int	other_actions(int argc, char **argv)
 		cd(argc, argv[1]);
 	else if (ft_strncmp(argv[0], "pwd", 3) == 0 && !argv[0][3])
 		pwd(argc);
-	// else if (ft_strncmp(argv[0], "unset", 5) == 0 && !argv[0][5])
-	// 	unset(argv[1]);
+	else if (ft_strncmp(argv[0], "unset", 5) == 0 && !argv[0][5])
+		unset(argv[1]);
 	else
 		flag = 1;
 	return (flag);
@@ -120,7 +121,6 @@ void	init_shell(int argc, char **argv, char **envp)
 		printf("ok\n");
 	flag = 0;
 	flag += fork_actions(argc, argv, envp, flag);
-//	printf("%d\n", flag);
 	flag += other_actions(argc, argv);
 	flag += export_action(argc, argv);
 	if (flag == 3)

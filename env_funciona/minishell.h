@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 08:38:25 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/02/06 21:27:15 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/02/13 19:51:15 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <signal.h>
 
 typedef struct s_prompt
 {
@@ -34,6 +35,7 @@ typedef struct s_prompt
 typedef struct s_mini
 {
 	char	**full_cmd;
+	char	**commands;
 	char	*full_path;
 	int		infile;
 	int		outfile;
@@ -57,7 +59,7 @@ int		ft_count_splits(char const *s, char c);
 void	echo(char **av, int flag);
 void	pwd(int argc);
 void	cd(int argc, char *av);
-// void	unset(char *argv);
+void	unset(char *argv);
 
 //init_shell.c
 int		export_action(int argc, char **argv);
@@ -65,6 +67,9 @@ int		fork_actions(int argc, char **argv, char **envp, int flag);
 int		other_actions(int argc, char **argv);
 void	init_shell(int argc, char **argv, char **envp);
 //exit.c
-int	ft_exit(t_mini *data);
+int		ft_exit(t_mini *data);
+//parse_imput.c
+int		parsequotes(t_mini *data);
+void	remove_quotes(char *imput);
 
 #endif

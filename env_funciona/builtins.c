@@ -6,17 +6,19 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:04:02 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/02/06 20:20:27 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/02/09 17:31:28 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void	unset(char *argv)
-// {
-// 	getenv(argv) = NULL;
-	
-// }
+void	unset(char *argv)
+{
+	char *unset;
+	unset = getenv(argv);
+	unset = NULL;
+	// getenv(argv) = NULL;
+}
 
 void	pwd(int argc)
 {
@@ -34,31 +36,17 @@ void	pwd(int argc)
 void	cd(int argc, char *av)
 {
 	char	*path;
-//	char	*pwd;
-	char	*user;
 
-//	pwd = NULL;
-	//printf("av: %s\n", av);
 	if (argc == 1)
-	{
-		path = "/home/";
-		user = getenv("USER");
-		path = ft_strjoin(path, user);
-	}
+		path = getenv("HOME");
 	else
 		path = av;
-	//pwd = getcwd(NULL, 0);
-	//printf("%s\n", pwd); 
 	if (chdir(path) == -1)
 	{
 		perror("cd");
 		return ;
-	/* return error of some sort, don't continue */
 	}
-	/*else
-		pwd = getcwd(NULL, 0);
-	//printf("%s\n", pwd);
-*/}
+}
 
 void	echo(char **av, int flag)
 {
@@ -67,7 +55,7 @@ void	echo(char **av, int flag)
 	i = 1;
 	if (flag == 2)
 		i = 2;
-	while (av[i] && ft_strncmp(av[i], "-n", 2) == 0 && ft_strlen(av[i]) == 2)
+	while (av[i] && ft_strncmp(av[i], "-n", 2) == 0 && !av[i][2])
 		i++;
 	while (av[i])
 	{
