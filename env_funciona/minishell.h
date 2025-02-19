@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 08:38:25 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/02/13 19:51:15 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/02/19 18:54:46 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	**ft_split(char const *s, char c);
 void	free_split(char **argv);
 int		ft_count_splits(char const *s, char c);
+char	**ft_splitquotes(char const *s, char c, char s_quote, char d_quote);
+size_t	ft_num_word(char const *s, char c, size_t i, size_t num_word);
 
 //builtins.c
 void	echo(char **av, int flag);
@@ -69,7 +71,9 @@ void	init_shell(int argc, char **argv, char **envp);
 //exit.c
 int		ft_exit(t_mini *data);
 //parse_imput.c
-int		parsequotes(t_mini *data);
-void	remove_quotes(char *imput);
+/* int		parsequotes(t_mini *data);*/
+void	remove_quotes(char *imput, int i);
+int		detectopenquotes(char *line);
+
 
 #endif

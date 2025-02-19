@@ -6,12 +6,12 @@
 #    By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/21 11:25:51 by iboiraza          #+#    #+#              #
-#    Updated: 2025/02/13 17:16:07 by iksaiz-m         ###   ########.fr        #
+#    Updated: 2025/02/16 20:26:25 by iksaiz-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g
 READLINE	= -lreadline
 NAME		= minishell
 RM			= rm -rf

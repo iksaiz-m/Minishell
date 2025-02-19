@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 10:00:58 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/02/13 19:58:53 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/02/19 19:07:59 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,17 @@ char	*ft_print_user(void)
 	char	*username;
 	char	*simbol;
 	char	*userwithpwd;
+	char	*fullprompt;
 
 	pwd = getcwd(NULL, 0);
 	username = getenv("USER");
 	simbol = " \n> ";
 	userwithpwd = ft_strjoin(username, pwd);
-	userwithpwd = ft_strjoin(userwithpwd, simbol);
+	fullprompt = ft_strjoin(userwithpwd, simbol);
+	free(userwithpwd);
 	// printf("\033[37;44m%s\033[0m", username);
 	// printf("\033[32m %s\033[0m\n", pwd);
-	return (userwithpwd);
+	return (fullprompt);
 }
 
 // void	enter(char *line, char **envp, t_mini **data)
@@ -49,34 +51,46 @@ char	*ft_print_user(void)
 // 	free_split(commands);
 // 	//free_split(adddata->full_cmd);
 // }
-void	enterdata(char *line, char **envp, t_mini **data)
-{
-	t_mini	*adddata;
-
-	adddata = malloc(sizeof (struct s_mini));
-	if (!adddata)
-		return ;
-	add_history(line);
-	adddata->envp = envp;
-	adddata->commands = ft_split(line, ' ');
-	adddata->splits = ft_count_splits(line, ' ');
-	*data = adddata;
-}
 
 void	enter(t_mini *data)
 {
 	int	i;
 
 	i = 0;
-	if (!parsequotes(data))
+	// if (!parsequotes(data))
+	// {
+	// 	printf("syntax error: dquote\n");
+	// 	return ;
+	// }
+	while (data->commands[i])
+		remove_quotes(data->commands[i++], 0);
+	init_shell(data->splits, data->commands, data->envp);
+	free_split(data->commands);
+}
+
+void	enterdata(char *line, char **envp, t_mini **data)
+{
+	t_mini	*adddata;
+
+	add_history(line);
+	if (!detectopenquotes(line))
 	{
 		printf("syntax error: dquote\n");
 		return ;
 	}
-	while (data->commands[i])
-		remove_quotes(data->commands[i++]);
-	init_shell(data->splits, data->commands, data->envp);
-	free_split(data->commands);
+	adddata = malloc(sizeof (struct s_mini));
+	if (!adddata)
+		return ;
+	adddata->envp = envp;
+	// if (detectopenquotes(line) == 1)
+	// 	adddata->commands = ft_splitquotes(line, ' ', '\'', '\"');
+	adddata->commands = ft_split(line, ' ');
+	// adddata->splits = ft_count_splits(line, ' ');
+	// adddata->splits = ft_num_word(line, ' ');
+	adddata->splits = ft_count_splits(line, ' ');
+	*data = adddata;
+	ft_exit(*data);
+	enter(*data);
 }
 
 int	exist(char *line)
@@ -86,7 +100,7 @@ int	exist(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] != ' ' && line [i] != '\0')
+		if (line[i] != ' ' && line[i] != '\0')
 			return (1);
 		i++;
 	}
@@ -105,29 +119,12 @@ int	main(int argc, char **argv, char **envp)
 	while (argc && argv)
 	{
 		prompt = ft_print_user();
-		// printf("\033[37;44m%s\033[0m", getenv("USER"));
-		// printf("\033[32m %s\033[0m\n", getcwd(NULL, 0));
-		// printf("var home--->   %s\n", getenv("HOME"));
 		line = readline(prompt);
 		if (exist(line) == 0)
 			write(1, "\0", 1);
 		if (exist(line))
 			enterdata(line, envp, &data);
-		// enter(line, envp, &data);
-		if (ft_exit(data))
-		{
-			free(line);
-			break ;
-		}
-		enter(data);
-		// if (ft_exit(data))
-		// {
-		// 	free(line);
-		// 	break ;
-		// }
-		//free (line);
 	}
-	printf("\033[31mFin.\033[0m\n");
 	return (0);
 }
 /*char c;

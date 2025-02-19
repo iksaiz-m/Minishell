@@ -6,34 +6,28 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:14:38 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/02/13 19:52:21 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/02/19 18:54:17 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	parsequotes(t_mini *data)
+
+int	detectopenquotes(char *line)
 {
+	int		i;
 	int		d_quotes;
 	int		s_quotes;
-	int		i;
-	int		t;
 
+	i = 0;
 	d_quotes = 0;
 	s_quotes = 0;
-	t = 0;
-	i = 0;
-	while (data->commands[i])
+	while (line[i])
 	{
-		while (data->commands[i][t])
-		{
-			if (data->commands[i][t] == '\"' && !s_quotes)
-				d_quotes = !d_quotes;
-			else if (data->commands[i][t] == '\'' && !d_quotes)
-				s_quotes = !s_quotes;
-			t++;
-		}
-		t = 0;
+		if (line[i] == '\"' && !s_quotes)
+			d_quotes = !d_quotes;
+		if (line[i] == '\'' && !d_quotes)
+			s_quotes = !s_quotes;
 		i++;
 	}
 	if (s_quotes || d_quotes)
@@ -41,13 +35,27 @@ int	parsequotes(t_mini *data)
 	return (1);
 }
 
-void	remove_quotes(char	*imput)
+//  int	detectquotes(char *line)
+// {
+// 	int		i;
+
+// 	i = 0;
+// 	while (line[i])
+// 	{
+// 		if (line[i] == '\"')
+// 			return (1);
+// 		if (line[i] == '\'')
+// 			return (1);
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
+void	remove_quotes(char	*imput, int i)
 {
-	int		i;
 	int		d_quotes;
 	int		s_quotes;
 
-	i = 0;
 	d_quotes = 0;
 	s_quotes = 0;
 	while (imput[i])
@@ -66,6 +74,7 @@ void	remove_quotes(char	*imput)
 				ft_strlen(&imput[i]));
 			continue ;
 		}
-		i++;
+		else
+			i++;
 	}
 }
