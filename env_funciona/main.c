@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 10:00:58 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/02/19 19:07:59 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/02/23 20:18:29 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,18 @@ char	*ft_print_user(void)
 	char	*username;
 	char	*simbol;
 	char	*userwithpwd;
-	char	*fullprompt;
+	char	*prompt;
 
 	pwd = getcwd(NULL, 0);
 	username = getenv("USER");
 	simbol = " \n> ";
 	userwithpwd = ft_strjoin(username, pwd);
-	fullprompt = ft_strjoin(userwithpwd, simbol);
+	prompt = ft_strjoin(userwithpwd, simbol);
+	free(pwd);
 	free(userwithpwd);
 	// printf("\033[37;44m%s\033[0m", username);
 	// printf("\033[32m %s\033[0m\n", pwd);
-	return (fullprompt);
+	return (prompt);
 }
 
 // void	enter(char *line, char **envp, t_mini **data)
@@ -66,6 +67,7 @@ void	enter(t_mini *data)
 		remove_quotes(data->commands[i++], 0);
 	init_shell(data->splits, data->commands, data->envp);
 	free_split(data->commands);
+	free(data);
 }
 
 void	enterdata(char *line, char **envp, t_mini **data)
@@ -120,6 +122,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		prompt = ft_print_user();
 		line = readline(prompt);
+		free(prompt);
 		if (exist(line) == 0)
 			write(1, "\0", 1);
 		if (exist(line))

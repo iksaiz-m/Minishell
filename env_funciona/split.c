@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:01:50 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/02/19 18:05:07 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/02/23 19:37:52 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,6 @@ char	**ft_split(char const *s, char c)
 	result = (char **)malloc((splits + 1) * sizeof(char *));
 	if (!result)
 		return (NULL);
-	printf("Valor split: %d\n", splits);
 	while (i < splits)
 	{
 		while (*s == c)

@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:04:02 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/02/09 17:31:28 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/02/23 20:21:33 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	pwd(int argc)
 	}
 	pwd = getcwd(NULL, 0);
 	printf("%s\n", pwd);
+	free(pwd);
 }
 
 void	cd(int argc, char *av)

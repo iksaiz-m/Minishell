@@ -6,41 +6,44 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 08:38:25 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/02/19 18:54:46 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/02/21 19:03:56 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
-# define MINISHELL_H
+#define MINISHELL_H
 
-# include <unistd.h>
-# include <sys/stat.h>
-# include <sys/types.h>
-# include <dirent.h>
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include <sys/wait.h>
-# include <signal.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <sys/wait.h>
+#include <signal.h>
+#define COLOR_AZUL "\033[34m"
+#define COLOR_VERDE "\033[32m"
+#define COLOR_RESET "\033[0m"
 
 typedef struct s_prompt
 {
-	va_list	*cmds;
-	char	**envp;
-	pid_t	pid;
+	va_list *cmds;
+	char **envp;
+	pid_t pid;
 }		t_prompt;
 
 typedef struct s_mini
 {
-	char	**full_cmd;
-	char	**commands;
-	char	*full_path;
-	int		infile;
-	int		outfile;
-	int		splits;
-	char	**envp;
+	char **full_cmd;
+	char **commands;
+	char *full_path;
+	int infile;
+	int outfile;
+	int splits;
+	char **envp;
 }	t_mini;
 
 //utils.c
@@ -74,6 +77,5 @@ int		ft_exit(t_mini *data);
 /* int		parsequotes(t_mini *data);*/
 void	remove_quotes(char *imput, int i);
 int		detectopenquotes(char *line);
-
 
 #endif
