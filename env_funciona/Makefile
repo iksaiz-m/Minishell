@@ -16,7 +16,8 @@ READLINE	= -lreadline
 NAME		= minishell
 RM			= rm -rf
 
-CFILES = main.c builtins.c init_shell.c split.c utils.c exit.c parse_imput.c
+CFILES = main.c builtins.c init_shell.c split.c utils.c exit.c parse_imput.c\
+			commands.c
 
 OFILES = $(CFILES:.c=.o)
 

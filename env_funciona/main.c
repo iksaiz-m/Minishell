@@ -12,6 +12,19 @@
 
 #include "minishell.h"
 
+void	print_logo(void)
+{
+	printf(GREEN "\n==== Welcome to minishell by Ibon & Iker ====\n");
+	printf("A minimal shell implementation | 42 School Project\n\n");
+	printf(MAGENTA "███╗   ███╗██╗███╗   ██╗██╗██╗██╗██╗\n" \
+			"████╗ ████║██║████╗  ██║██║██║██║██║\n" \
+			"██╔████╔██║██║██╔██╗ ██║██║██║██║██║\n" \
+			"██║╚██╔╝██║██║██║╚██╗██║██║██║██║██║\n" \
+			"██║ ╚═╝ ██║██║██║ ╚████║██║██║██║██║\n" \
+			"╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚═╝╚═╝╚═╝\n" \
+			"                                      \n" RST);
+}
+
 char	*ft_print_user(void)
 {
 	char	*pwd;
@@ -52,7 +65,6 @@ char	*ft_print_user(void)
 // 	free_split(commands);
 // 	//free_split(adddata->full_cmd);
 // }
-
 void	enter(t_mini *data)
 {
 	int	i;
@@ -65,7 +77,9 @@ void	enter(t_mini *data)
 	// }
 	while (data->commands[i])
 		remove_quotes(data->commands[i++], 0);
-	init_shell(data->splits, data->commands, data->envp);
+	
+	if(init_shell(data->splits, data->commands, data->envp))
+		not_builtin_command(&data);
 	free_split(data->commands);
 	free(data);
 }
@@ -116,6 +130,7 @@ int	main(int argc, char **argv, char **envp)
 	char	*prompt;
 
 	data = NULL;
+	print_logo();
 	// signal(SIGUSR1, signal_received);
 	// signal(SIGUSR2, signal_received);
 	while (argc && argv)

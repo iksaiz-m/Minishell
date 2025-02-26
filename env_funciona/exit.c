@@ -14,6 +14,14 @@
 
 int	ft_exit(t_mini *data)
 {
+	int	i;
+	
+	i = 0;
+	while (data->commands[i])
+	{
+		printf("%i: %s\n", i, data->commands[i]);
+		i++;
+	}
 	if (data->splits <= 2)
 	{
 		if (ft_strncmp(data->commands[0], "exit", 4) == 0

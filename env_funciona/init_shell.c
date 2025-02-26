@@ -39,13 +39,13 @@ int	export_action(int argc, char **argv)
 
 int	fork_actions(int argc, char **argv, char **envp, int flag)
 {
-	pid_t	pid;
-	char	*path;
+	//pid_t	pid;
+	//char	*path;
 	int		i;
 	int		j;
 
 	i = 0;
-	if ((ft_strncmp(argv[0], "ls", 2) == 0 && !argv[0][2])
+	/*if ((ft_strncmp(argv[0], "ls", 2) == 0 && !argv[0][2])
 		|| (ft_strncmp(argv[0], "/bin/ls", 7) == 0 && !argv[0][7]))
 	{
 		pid = fork();
@@ -56,8 +56,8 @@ int	fork_actions(int argc, char **argv, char **envp, int flag)
 			exit(0);
 		}
 		wait(NULL);
-	}
-	else if (argc == 1 && ft_strncmp(argv[0], "env", 3) == 0 && !argv[0][3])
+	}*/
+	if (argc == 1 && ft_strncmp(argv[0], "env", 3) == 0 && !argv[0][3])
 	{
 		while (envp[i])
 		{
@@ -113,7 +113,7 @@ int	other_actions(int argc, char **argv)
 	return (flag);
 }
 
-void	init_shell(int argc, char **argv, char **envp)
+int	init_shell(int argc, char **argv, char **envp)
 {
 	int	flag;
 
@@ -124,6 +124,7 @@ void	init_shell(int argc, char **argv, char **envp)
 	flag += other_actions(argc, argv);
 	flag += export_action(argc, argv);
 	if (flag == 3)
-		printf("Command not found: %s\n", argv[0]);
-	return ;
+		return (1);
+//		printf("Command not found: %s\n", argv[0]);
+	return(0) ;
 }

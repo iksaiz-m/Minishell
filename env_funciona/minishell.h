@@ -25,8 +25,9 @@
 #include <sys/wait.h>
 #include <signal.h>
 #define COLOR_AZUL "\033[34m"
-#define COLOR_VERDE "\033[32m"
-#define COLOR_RESET "\033[0m"
+#define GREEN "\033[32m"
+#define MAGENTA "\033[1;35m"
+#define RST "\033[0m"
 
 typedef struct s_prompt
 {
@@ -70,12 +71,15 @@ void	unset(char *argv);
 int		export_action(int argc, char **argv);
 int		fork_actions(int argc, char **argv, char **envp, int flag);
 int		other_actions(int argc, char **argv);
-void	init_shell(int argc, char **argv, char **envp);
+int	init_shell(int argc, char **argv, char **envp);
 //exit.c
 int		ft_exit(t_mini *data);
 //parse_imput.c
 /* int		parsequotes(t_mini *data);*/
 void	remove_quotes(char *imput, int i);
 int		detectopenquotes(char *line);
+
+//commands.c
+void	not_builtin_command(t_mini **data);
 
 #endif
