@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 20:48:06 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/02/23 20:17:11 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:49:28 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_exit(t_mini *data)
 		if (ft_strncmp(data->commands[0], "exit", 4) == 0
 			&& !data->commands[0][4])
 		{
-			printf("free %p\n", data->commands);
+			// printf("free %p\n", data->commands);
 			free_split(data->commands);
 			printf("\033[31mFin.\033[0m\n");
 			free(data);

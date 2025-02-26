@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:01:50 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/02/23 19:37:52 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:48:13 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ static int	ft_sub_len(char const *s, char c)
 			break ;
 		i++;
 	}
-	printf("Valor i: %d\n", i);
+	// printf("Valor i: %d\n", i);
 	return (i);
 }
 

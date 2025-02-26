@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:11:59 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/02/14 19:51:50 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:52:10 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,6 @@ int	init_shell(int argc, char **argv, char **envp)
 	flag += export_action(argc, argv);
 	if (flag == 3)
 		return (1);
-//		printf("Command not found: %s\n", argv[0]);
+		// printf("Command not found: %s\n", argv[0]);
 	return(0) ;
 }

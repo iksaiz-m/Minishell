@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iboiraza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:12:02 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/02/25 17:12:31 by iboiraza         ###   ########.fr       */
+/*   Updated: 2025/02/26 17:15:59 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ char    *clean_command(char *str)
     if (!str)
         return (NULL);
     if (strncmp(str, "/usr/bin/", 9) == 0)
-        return strdup(str + 9);
+        return (strdup(str + 9));
     if (strncmp(str, "/bin/", 5) == 0)
-        return strdup(str + 5);
-    return strdup(str);
+        return (strdup(str + 5));
+    return (strdup(str));
 }
 
 void	not_builtin_command(t_mini **data)
@@ -35,6 +35,8 @@ void	not_builtin_command(t_mini **data)
 //	i = 0;
     little = clean_command(current->commands[0]);
 	path = ft_strjoin("/usr/bin/", little);
+	printf("Que coño es path : %s\n", path);
+	free(little);
 	if (current->commands[0])
 	{
 		pid = fork();
@@ -46,6 +48,7 @@ void	not_builtin_command(t_mini **data)
 		}
 		wait(NULL);
 	}
+	free(path);
 }
 /*i = 0;
 	while (current->commands[i])
