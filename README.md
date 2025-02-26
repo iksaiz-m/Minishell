@@ -1,1 +1,1 @@
-Una implementacion sencilla de una shell de Bash creada junto a [ibon-ira ](ibon-ira)
+Una implementacion sencilla de una shell de Bash creada junto a [ibon-ira ]([ibon-ira](https://github.com/ibon-ira))
