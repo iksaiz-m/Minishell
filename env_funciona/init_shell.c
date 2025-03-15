@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:11:59 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/02/26 16:52:10 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/03/15 20:35:01 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,17 @@ int	export_action(int argc, char **argv)
 	return (flag);
 }
 
-int	fork_actions(int argc, char **argv, char **envp, int flag)
+int	fork_actions(int argc, char **argv, int flag, t_mini **data)
 {
 	//pid_t	pid;
 	//char	*path;
+	printf("HOLA\n");
 	int		i;
-	int		j;
+	t_mini *env;
 
 	i = 0;
+	printf("HOLA 2\n");
+	env = *data;
 	/*if ((ft_strncmp(argv[0], "ls", 2) == 0 && !argv[0][2])
 		|| (ft_strncmp(argv[0], "/bin/ls", 7) == 0 && !argv[0][7]))
 	{
@@ -57,43 +60,23 @@ int	fork_actions(int argc, char **argv, char **envp, int flag)
 		}
 		wait(NULL);
 	}*/
+	printf("HOLA 3\n");
 	if (argc == 1 && ft_strncmp(argv[0], "env", 3) == 0 && !argv[0][3])
 	{
-		while (envp[i])
-		{
-			j = 0;
-			while (envp[i][j])
-			{
-				write(1, &envp[i][j], 1);
-				j++;
-			}
-			printf("\n");
-			i++;
-		}
+		printf("HOLA 4\n");
+		printaddata(env->env);
 	}
-	// else if (argc >= 1 && ft_strncmp(argv[0], "export", 6) == 0 && !argv[0][6])
-	// {
-	// 	while (envp[i])
-	// 	{
-	// 		j = 0;
-	// 		while(envp[i][j])
-	// 		{
-	// 			write(1, &envp[i][j], 1);
-	// 			j++;
-	// 		}
-	// 		printf("\n");
-	// 		i++;
-	// 	}
-	// }
 	else
 		flag = 1;
 	return (flag);
 }
 
-int	other_actions(int argc, char **argv)
+int	other_actions(int argc, char **argv, t_mini **data)
 {
 	int	flag;
+	t_mini *env;
 
+	env = *data;
 	flag = 0;
 	if (argc > 1 && ft_strncmp(argv[0], "echo", 4) == 0 && !argv[0][4]
 		&& ft_strncmp(argv[1], "-n", 2) == 0 && !argv[1][2])
@@ -107,21 +90,24 @@ int	other_actions(int argc, char **argv)
 	else if (ft_strncmp(argv[0], "pwd", 3) == 0 && !argv[0][3])
 		pwd(argc);
 	else if (ft_strncmp(argv[0], "unset", 5) == 0 && !argv[0][5])
-		unset(argv[1]);
+		unset(argv, &env->env);
 	else
 		flag = 1;
 	return (flag);
 }
 
-int	init_shell(int argc, char **argv, char **envp)
+int	init_shell(int argc, char **argv, char **envp, t_mini **data)
 {
 	int	flag;
-
+	t_mini	*ada;
 	if (!envp)
 		printf("ok\n");
 	flag = 0;
-	flag += fork_actions(argc, argv, envp, flag);
-	flag += other_actions(argc, argv);
+	ada = *data;
+	printf("%s-> %d\n", ada->commands[0], 2);
+	flag += fork_actions(argc, argv, flag, data);
+	printf("%s-> %d\n", ada->commands[0], 3);
+	flag += other_actions(argc, argv, data);
 	flag += export_action(argc, argv);
 	if (flag == 3)
 		return (1);

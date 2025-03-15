@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 08:38:25 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/02/21 19:03:56 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/03/08 19:37:57 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@
 typedef struct s_prompt
 {
 	va_list *cmds;
-	char **envp;
+	// char **envp;
+	char *envp;
+	struct s_prompt *next;
 	pid_t pid;
 }		t_prompt;
 
@@ -43,8 +45,8 @@ typedef struct s_mini
 	char *full_path;
 	int infile;
 	int outfile;
-	int splits;
-	char **envp;
+	int	splits;
+	t_prompt	*env;
 }	t_mini;
 
 //utils.c
@@ -53,6 +55,7 @@ int		ft_strlen(char *s);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char	*ft_strjoin(char *s1, char *s2);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
+void printaddata(t_prompt *adddata);
 
 //split.c
 char	**ft_split(char const *s, char c);
@@ -60,18 +63,21 @@ void	free_split(char **argv);
 int		ft_count_splits(char const *s, char c);
 char	**ft_splitquotes(char const *s, char c, char s_quote, char d_quote);
 size_t	ft_num_word(char const *s, char c, size_t i, size_t num_word);
+char 	**split_env(char **envp);
+char 	**unset_split(char **envp, int flag);
 
 //builtins.c
 void	echo(char **av, int flag);
 void	pwd(int argc);
 void	cd(int argc, char *av);
-void	unset(char *argv);
+// char	**unset(char **argv, char **envp);
+void	unset(char **argv, t_prompt **data);
 
 //init_shell.c
 int		export_action(int argc, char **argv);
-int		fork_actions(int argc, char **argv, char **envp, int flag);
-int		other_actions(int argc, char **argv);
-int	init_shell(int argc, char **argv, char **envp);
+int		fork_actions(int argc, char **argv, int flag, t_mini **data);
+int		other_actions(int argc, char **argv, t_mini **data);
+int	init_shell(int argc, char **argv, char **envp, t_mini **data);
 //exit.c
 int		ft_exit(t_mini *data);
 //parse_imput.c

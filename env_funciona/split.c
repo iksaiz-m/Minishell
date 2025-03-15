@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:01:50 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/02/26 16:48:13 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:58:39 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,57 @@ char	**ft_split(char const *s, char c)
 	}
 	result[splits] = NULL;
 	return (result);
+}
+
+char **split_env(char **envp)
+{
+	int		i;
+	int 	len;
+	char	**env;
+
+	i = 0;
+	while(envp[i])
+		i++;
+	env = (char **)malloc((i + 1) * sizeof(char *));
+	i = 0;
+	while(envp[i])
+	{
+		len = ft_strlen(envp[i]);
+		env[i] = (char *)malloc((len + 1) * sizeof(char));
+		if (!env[i])
+			return (ft_free_mem(env, i));
+		ft_strlcpy(env[i], envp[i], len + 1);
+		i++;
+	}
+	return (env);
+}
+char **unset_split(char **envp, int flag)
+{
+	int		i;
+	int 	len;
+	char	**env;
+
+	i = 0;
+	while(envp[i])
+		i++;
+	env = (char **)malloc((i - 1) * sizeof(char *));
+	i = 0;
+	while(envp[i])
+	{
+		if (i == flag)
+			i++;
+		else
+		{
+		len = ft_strlen(envp[i]);
+		env[i] = (char *)malloc((len + 1) * sizeof(char));
+		if (!env[i])
+			return (ft_free_mem(env, i));
+		ft_strlcpy(env[i], envp[i], len + 1);
+		}
+		if (env[i])
+			i++;
+	}
+	return (env);
 }
 
 // char	**ft_splitquotes(char const *s, char c, char s_quote, char d_quote)

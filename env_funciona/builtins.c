@@ -6,19 +6,37 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:04:02 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/02/23 20:21:33 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/03/08 18:30:43 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	unset(char *argv)
-{
-	char *unset;
-	unset = getenv(argv);
-	unset = NULL;
-	// getenv(argv) = NULL;
-}
+
+
+// char **unset(char **argv, char **envp)
+// {
+// 	int	i;
+// 	int	j;
+
+// 	i = 0;
+// 	j = 1;
+// 	char *join;
+// 	while(argv[j])
+// 	{
+// 		join = ft_strjoin(argv[j], "=");
+// 		while(envp[i])
+// 		{
+// 			if(ft_strncmp(join, envp[i], ft_strlen(join)) == 0 && envp[i][0] == argv[j][0])
+// 				envp = unset_split(envp, i);
+// 			i++;
+// 		}
+// 		free(join);
+// 		j++;
+// 		i = 0;
+// 	}
+// 	return (envp);
+// }
 
 void	pwd(int argc)
 {
