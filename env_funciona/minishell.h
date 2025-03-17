@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 08:38:25 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/03/17 18:18:10 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/03/17 20:46:57 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	echo(char **av, int flag);
 void	pwd(int argc);
 void	cd(int argc, char *av);
 // char	**unset(char **argv, char **envp);
+void	unset(char **argv, t_prompt **data);
 void	unset(char **argv, t_prompt **data);
 
 //init_shell.c

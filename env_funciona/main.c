@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 10:00:58 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/03/17 20:32:37 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/03/17 20:48:04 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,40 +58,10 @@ void	enter(t_mini *data)
 
 void printaddata(t_prompt *adddata)
 {
-	printf("FUCKTHIS\n");
 	while (adddata)
 	{
 		printf("%s\n", adddata->envp);
 		adddata = adddata->next;
-	}
-}
-
-void	remove_env(char *argv, t_prompt **data)
-{
-	t_prompt	*tmp;
-	t_prompt	*var;
-
-	var = NULL;
-	tmp = *data;
-	while(tmp)
-	{
-		// Comparamos el valor de la variable de entorno con argv
-		if (ft_strncmp(argv, tmp->envp, ft_strlen(argv)) == 0 
-			&& tmp->envp[ft_strlen(argv)] == '=')
-		{
-			// Si estamos eliminando el primer nodo (cabeza de lista)
-			if (var == NULL)
-				*data = tmp->next;
-			else
-				var->next = tmp->next;
-			// Liberamos el espacio de memoria de la variable de entorno y el nodo
-			free(tmp->envp);
-			free(tmp);
-			return;  // Terminamos la función después de eliminar el nodo
-		}
-		// Continuamos recorriendo la lista
-		var = tmp;
-		tmp = tmp->next;
 	}
 }
 
@@ -127,23 +97,6 @@ void	asignenvp(char **envp, t_prompt **data)
 	}
 	free(temp);
 }
-
-void	unset(char **argv, t_prompt **data)
-{
-	int	i;
-	t_prompt *unset;
-
-	unset = *data;
-	i = 1;
-	printf("HOLA 6\n");
-	while (argv[i])
-	{
-		remove_env(argv[i], &unset);
-		i++;
-	}
-}
-
-
 
 void	enterdata(char *line, t_mini *data)
 {

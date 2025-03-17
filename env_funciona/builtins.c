@@ -6,37 +6,55 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:04:02 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/03/08 18:30:43 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/03/17 20:47:32 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 
+void	remove_env(char *argv, t_prompt **data)
+{
+	t_prompt	*tmp;
+	t_prompt	*var;
 
-// char **unset(char **argv, char **envp)
-// {
-// 	int	i;
-// 	int	j;
+	var = NULL;
+	tmp = *data;
+	while(tmp)
+	{
+		// Comparamos el valor de la variable de entorno con argv
+		if (ft_strncmp(argv, tmp->envp, ft_strlen(argv)) == 0 
+			&& tmp->envp[ft_strlen(argv)] == '=')
+		{
+			// Si estamos eliminando el primer nodo (cabeza de lista)
+			if (var == NULL)
+				*data = tmp->next;
+			else
+				var->next = tmp->next;
+			// Liberamos el espacio de memoria de la variable de entorno y el nodo
+			free(tmp->envp);
+			free(tmp);
+			return;  // Terminamos la función después de eliminar el nodo
+		}
+		// Continuamos recorriendo la lista
+		var = tmp;
+		tmp = tmp->next;
+	}
+}
 
-// 	i = 0;
-// 	j = 1;
-// 	char *join;
-// 	while(argv[j])
-// 	{
-// 		join = ft_strjoin(argv[j], "=");
-// 		while(envp[i])
-// 		{
-// 			if(ft_strncmp(join, envp[i], ft_strlen(join)) == 0 && envp[i][0] == argv[j][0])
-// 				envp = unset_split(envp, i);
-// 			i++;
-// 		}
-// 		free(join);
-// 		j++;
-// 		i = 0;
-// 	}
-// 	return (envp);
-// }
+void	unset(char **argv, t_prompt **data)
+{
+	int	i;
+	t_prompt *unset;
+
+	unset = *data;
+	i = 1;
+	while (argv[i])
+	{
+		remove_env(argv[i], &unset);
+		i++;
+	}
+}
 
 void	pwd(int argc)
 {
