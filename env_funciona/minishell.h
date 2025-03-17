@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 08:38:25 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/03/08 19:37:57 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/03/17 18:18:10 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,13 @@ void	unset(char **argv, t_prompt **data);
 
 //init_shell.c
 int		export_action(int argc, char **argv);
-int		fork_actions(int argc, char **argv, int flag, t_mini **data);
+// int		fork_actions(int argc, char **argv, int flag, t_mini **data);
+int		fork_actions(int argc, char **argv, int flag, t_prompt *env);
+
 int		other_actions(int argc, char **argv, t_mini **data);
-int	init_shell(int argc, char **argv, char **envp, t_mini **data);
+// int	init_shell(int argc, char **argv, char **envp, t_mini **data);
+int	init_shell(int argc, char **argv, t_prompt *emv, t_mini **data);
+
 //exit.c
 int		ft_exit(t_mini *data);
 //parse_imput.c

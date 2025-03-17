@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 10:00:58 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/03/15 20:42:24 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/03/17 20:32:37 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,68 +40,25 @@ char	*ft_print_user(void)
 	prompt = ft_strjoin(userwithpwd, simbol);
 	free(pwd);
 	free(userwithpwd);
-	// printf("\033[37;44m%s\033[0m", username);
-	// printf("\033[32m %s\033[0m\n", pwd);
 	return (prompt);
 }
 
-// void	enter(char *line, char **envp, t_mini **data)
-// {
-// 	char	**commands;
-// 	int		splits;
-// 	t_mini *adddata;
-
-// 	// adddata = NULL;
-// 	adddata = malloc(sizeof (struct s_mini));
-// 	add_history(line);
-// 	adddata->envp = envp;
-// 	adddata->full_cmd = ft_split(line, ' ');
-// 	commands = ft_split(line, ' ');
-// 	adddata->splits = ft_count_splits(line, ' ');
-// 	splits = ft_count_splits(line, ' ');
-// 	init_shell(splits, commands, envp);
-// 	*data = adddata;
-// 	//init_shell(adddata->splits, adddata->full_cmd, adddata->envp);
-// 	free_split(commands);
-// 	//free_split(adddata->full_cmd);
-// }
 void	enter(t_mini *data)
 {
 	int	i;
 
 	i = 0;
-	// if (!parsequotes(data))
-	// {
-	// 	printf("syntax error: dquote\n");
-	// 	return ;
-	// }
-	printf("%s-> %d\n", data->commands[0], 1);
 	while (data->commands[i])
 		remove_quotes(data->commands[i++], 0);
-	if(init_shell(data->splits, data->commands, &data->env->envp, &data))
+	if (init_shell(data->splits, data->commands, data->env, &data))
 		not_builtin_command(&data);
 	free_split(data->commands);
-	free(data);
-}
-
-int	checklenght(t_prompt *stack)
-{
-	t_prompt	*tmp;
-	int		i;
-
-	i = 0;
-	tmp = stack;
-	while (tmp != NULL)
-	{
-		printf("%s\n", tmp->envp);
-		// i++;
-		tmp = tmp->next;
-	}
-	return (i);
+	// free(data->splits);
 }
 
 void printaddata(t_prompt *adddata)
 {
+	printf("FUCKTHIS\n");
 	while (adddata)
 	{
 		printf("%s\n", adddata->envp);
@@ -116,8 +73,6 @@ void	remove_env(char *argv, t_prompt **data)
 
 	var = NULL;
 	tmp = *data;
-	printf("HOLA 7\n");
-
 	while(tmp)
 	{
 		// Comparamos el valor de la variable de entorno con argv
@@ -138,7 +93,6 @@ void	remove_env(char *argv, t_prompt **data)
 		var = tmp;
 		tmp = tmp->next;
 	}
-		printf("HOLA 8\n");
 }
 
 void	asignenvp(char **envp, t_prompt **data)
@@ -149,6 +103,11 @@ void	asignenvp(char **envp, t_prompt **data)
 	int		i;
 
 	temp = split_env(envp);
+	if (!temp)
+	{
+        printf("Error: split_env devolvió NULL\n");
+        return;
+    }
 	new = NULL;
 	last = NULL;
 	i = 0;
@@ -169,46 +128,6 @@ void	asignenvp(char **envp, t_prompt **data)
 	free(temp);
 }
 
-// void	remove_env(char *argv, t_prompt *data)
-// {
-// 	t_prompt	*tmp;
-// 	t_prompt	*var;
-
-// 	var = NULL;
-// 	tmp = data;
-	
-// 	while(tmp)
-// 	{
-// 		if (ft_strncmp(argv, tmp->envp, ft_strlen(argv)) == 0 
-// 			&& tmp->envp[0] == argv[0])
-// 		{
-// 			if (var == NULL)
-// 				data = tmp->next;
-// 			else
-// 				var->next = tmp->next;
-// 			return (free(tmp->envp), free(tmp));
-// 			// break;
-// 		}
-// 			printf("HOLA");
-// 		var = tmp;
-// 		tmp = tmp->next;
-// 	}
-
-		// var = mini->env;
-		// while (var)
-		// {
-		// 	if (!ft_strcmp(var->name, node->full_cmd[1])
-		// 		&& ft_strcmp(node->full_cmd[1], "?"))
-		// // 	{
-		// 		if (prev == NULL)
-		// 			mini->env = var->next;
-		// 		else
-		// 			prev->next = var->next;
-		// 		return (free(var->content), free(var->name), free(var));
-		// 	// }
-		// 	prev = var;
-		// 	var = var->next;
-
 void	unset(char **argv, t_prompt **data)
 {
 	int	i;
@@ -216,67 +135,28 @@ void	unset(char **argv, t_prompt **data)
 
 	unset = *data;
 	i = 1;
-	// char *join;
 	printf("HOLA 6\n");
 	while (argv[i])
 	{
 		remove_env(argv[i], &unset);
-		// while (envp[i])
-		// {
-		// 	if (ft_strncmp(argv[i], envp[i], ft_strlen(argv[i])) == 0 && envp[i][0] == argv[i][0])
-		// 		envp = unset_split(envp, i);
-		// 	i++;
-		// }
-		// free(join);
 		i++;
 	}
-	// printaddata(*data);
-	// printf("\n");
-	// printaddata(*data);
 }
 
 
 
-void	enterdata(char *line, t_mini **data)
+void	enterdata(char *line, t_mini *data)
 {
-	t_mini	*adddata;
-	// char	**temp;
-
 	add_history(line);
 	if (!detectopenquotes(line))
 	{
 		printf("syntax error: dquote\n");
 		return ;
 	}
-	adddata = malloc(sizeof (struct s_mini));
-	if (!adddata)
-		return ;
-	// adddata->envp = envp;
-
-	// while(envp[i])
-	// {
-	// 	printf("%s\n", envp[i]);
-	// 	i++;
-	// }
-	// while(temp[i])
-	// {
-	// 	printf("%s\n", temp[i]);
-	// 	i++;
-	// }
-	// adddata->envp = split_env(envp);
-	// asignenvp(temp, &adddata->env);
-	// checklenght(adddata);
-	// printaddata(adddata);
-
-	// if (detectopenquotes(line) == 1)
-	// 	adddata->commands = ft_splitquotes(line, ' ', '\'', '\"');
-	adddata->commands = ft_split(line, ' ');
-	// adddata->splits = ft_count_splits(line, ' ');
-	// adddata->splits = ft_num_word(line, ' ');
-	adddata->splits = ft_count_splits(line, ' ');
-	*data = adddata;
-	ft_exit(*data);
-	enter(*data);
+	data->commands = ft_split(line, ' ');
+	data->splits = ft_count_splits(line, ' ');
+	ft_exit(data);
+	enter(data);
 }
 
 int	exist(char *line)
@@ -305,6 +185,17 @@ void	*ft_memset(void *b, int c, size_t len)
 	}
 	return (b);
 }
+void	init_data(t_mini **data, char **envp)
+{
+	t_mini	*addata;
+
+	addata = malloc(sizeof (struct s_mini));
+	if (!addata)
+		return ;
+	addata->env = NULL; //initialize structure
+	asignenvp(envp, &addata->env); //asign env to structure
+	*data = addata; //
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -312,14 +203,12 @@ int	main(int argc, char **argv, char **envp)
 	t_mini	*data;
 	char	*prompt;
 
-	data = malloc(sizeof (struct s_mini));
-	if (!data)
-		return (0);
+	data = NULL;
 	print_logo();
 	// signal(SIGUSR1, signal_received);
 	// signal(SIGUSR2, signal_received);
-	// ft_memset(data, 0, sizeof(data));
-	asignenvp(envp, &data->env);
+
+	init_data(&data, envp); //Initialize env variables
 	while (argc && argv)
 	{
 		prompt = ft_print_user();
@@ -328,10 +217,7 @@ int	main(int argc, char **argv, char **envp)
 		if (exist(line) == 0)
 			write(1, "\0", 1);
 		if (exist(line))
-		{
-			printaddata(data->env);
-			enterdata(line, &data);
-		}
+			enterdata(line, data);
 	}
 	return (0);
 }

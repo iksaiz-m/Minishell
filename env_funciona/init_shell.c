@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:11:59 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/03/15 20:35:01 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/03/17 19:10:38 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,35 +37,12 @@ int	export_action(int argc, char **argv)
 	return (flag);
 }
 
-int	fork_actions(int argc, char **argv, int flag, t_mini **data)
+int	fork_actions(int argc, char **argv, int flag, t_prompt *env)
 {
-	//pid_t	pid;
-	//char	*path;
-	printf("HOLA\n");
 	int		i;
-	t_mini *env;
-
 	i = 0;
-	printf("HOLA 2\n");
-	env = *data;
-	/*if ((ft_strncmp(argv[0], "ls", 2) == 0 && !argv[0][2])
-		|| (ft_strncmp(argv[0], "/bin/ls", 7) == 0 && !argv[0][7]))
-	{
-		pid = fork();
-		if (pid == 0)
-		{
-			path = "/usr/bin/ls";
-			execv(path, &argv[0]);
-			exit(0);
-		}
-		wait(NULL);
-	}*/
-	printf("HOLA 3\n");
 	if (argc == 1 && ft_strncmp(argv[0], "env", 3) == 0 && !argv[0][3])
-	{
-		printf("HOLA 4\n");
-		printaddata(env->env);
-	}
+		printaddata(env);
 	else
 		flag = 1;
 	return (flag);
@@ -96,21 +73,15 @@ int	other_actions(int argc, char **argv, t_mini **data)
 	return (flag);
 }
 
-int	init_shell(int argc, char **argv, char **envp, t_mini **data)
+int	init_shell(int argc, char **argv, t_prompt *env, t_mini **data)
 {
 	int	flag;
-	t_mini	*ada;
-	if (!envp)
-		printf("ok\n");
+
 	flag = 0;
-	ada = *data;
-	printf("%s-> %d\n", ada->commands[0], 2);
-	flag += fork_actions(argc, argv, flag, data);
-	printf("%s-> %d\n", ada->commands[0], 3);
+	flag += fork_actions(argc, argv, flag, env);
 	flag += other_actions(argc, argv, data);
 	flag += export_action(argc, argv);
 	if (flag == 3)
 		return (1);
-		// printf("Command not found: %s\n", argv[0]);
 	return(0) ;
 }
