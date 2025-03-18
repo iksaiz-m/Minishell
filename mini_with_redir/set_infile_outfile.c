@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   set_infile_outfile.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iboiraza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/18 10:40:35 by iboiraza          #+#    #+#             */
+/*   Updated: 2025/03/18 10:40:37 by iboiraza         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	check_heredoc(char *limit, int *infile)
@@ -42,7 +54,7 @@ int	second_case_aux(char **commands, int *outfile, int i)
 
 int	third_case_aux(char **commands, int *infile, int i)
 {
-	if (!ft_strncmp(commands[i - 1], "<", 1))
+	if (ft_strncmp(commands[i - 1], "<<", 2))
 	{
 		if (*infile != STDIN_FILENO && *infile != -1)
 			close(*infile);

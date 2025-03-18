@@ -125,6 +125,7 @@ char	*ft_strdup(const char *s1);
 char	**set_bin_path(t_mini *data);
 char **split_env(char **envp);
 char	**ft_free_mem(char **result, int i);
+int	check_pipe_redir(char *s, int i);
 
 extern int	g_status;
 

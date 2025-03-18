@@ -1,6 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   here_doc.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iboiraza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/18 10:38:16 by iboiraza          #+#    #+#             */
+/*   Updated: 2025/03/18 10:38:17 by iboiraza         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-extern int	g_status;
+#include "minishell.h"
 
 char	*get_here_str(char *str[2], int len, char *limit, char *warn)
 {

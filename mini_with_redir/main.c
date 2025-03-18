@@ -175,6 +175,8 @@ int	ft_check_input(char *line)
 {
 	if (!detectopenquotes(line))
 		return (printf("syntax error: dquote\n"), 1);
+	if (!check_pipe_redir(line, 0))
+		return (1);
 	return (0);
 }
 
@@ -241,6 +243,8 @@ int	exist(char *line)
 	int	i;
 
 	i = 0;
+	if (line[0] == '<' || (line[0] == '>' && line[1] == '>'))
+		return (0);
 	while (line[i])
 	{
 		if (line[i] != ' ' && line[i] != '\0')
