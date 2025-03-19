@@ -26,6 +26,25 @@ void	check_heredoc(char *limit, int *infile)
 		*infile = STDIN_FILENO;
 }
 
+/*int	third_case_aux(char **commands, int *infile, int i)
+{
+	int	i;
+
+	if (*infile != STDIN_FILENO && *infile != -1)
+			close(*infile);
+	if (!ft_strncmp(commands[i - 1], "<<", 2))
+		*infile = check_heredoc(commands[i])
+	else
+		*infile = open(commands[i], O_RDONLY);
+	if (*infile == -1)
+	{
+        printf("%s : No such file or directory\n", commands[i]);
+		*infile = STDIN_FILENO;
+		return (0);
+	}
+	return (1);
+}*/
+
 int	first_case_aux(char **commands, int *outfile, int i)
 {
 	if (*outfile != STDOUT_FILENO)

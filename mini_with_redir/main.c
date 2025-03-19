@@ -243,7 +243,7 @@ int	exist(char *line)
 	int	i;
 
 	i = 0;
-	if (line[0] == '<' || (line[0] == '>' && line[1] == '>'))
+	if (line[0] == '<' || line[0] == '>' || (line[0] == '>' && line[1] == '>'))
 		return (0);
 	while (line[i])
 	{
