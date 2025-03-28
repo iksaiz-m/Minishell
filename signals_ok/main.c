@@ -237,7 +237,8 @@ void handle_sigquit(int sig)
 void setup_signals(void)
 {
     signal(SIGINT, handle_sigint);
-    signal(SIGQUIT, handle_sigquit);
+	signal(SIGQUIT, SIG_IGN);
+//	signal(SIGQUIT, handle_sigquit);
 }
 
 int	main(int argc, char **argv, char **envp)

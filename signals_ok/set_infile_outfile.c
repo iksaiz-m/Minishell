@@ -85,7 +85,12 @@ int	third_case_aux(char **commands, int *infile, int i)
 		}
 	}
 	else
+	{
 		check_heredoc(commands[i], infile);
+		*infile = open(".\vtemp\th", O_RDONLY);
+		if (*infile == -1)
+			return (printf("Error with heredoc\n"), 0);
+	}
 	return (1);
 }
 
