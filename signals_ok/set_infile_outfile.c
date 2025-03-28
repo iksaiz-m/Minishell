@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   set_infile_outfile.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iboiraza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/28 11:35:47 by iboiraza          #+#    #+#             */
+/*   Updated: 2025/03/28 11:35:49 by iboiraza         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /*void	check_heredoc(char *limit, int *infile)
@@ -35,7 +47,7 @@ void	check_heredoc(char *limit, int *infile)
 int	first_case_aux(char **commands, int *outfile, int i)
 {
 	if (*outfile != STDOUT_FILENO)
-		close(*outfile);
+		close(*outfile); 
 	*outfile = open(commands[i], O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (*outfile == -1)
 	{

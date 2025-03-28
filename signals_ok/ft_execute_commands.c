@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_execute_commands.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iboiraza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/28 11:35:08 by iboiraza          #+#    #+#             */
+/*   Updated: 2025/03/28 11:35:14 by iboiraza         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	child_execution(t_mini *data, t_node *node)
@@ -93,13 +105,13 @@ void	execute_simple_command(t_mini *data, t_node *node, pid_t pid)
 				printf("Error with input file\n");
 			close(node->infile);
 		}
-		if (node->outfile != STDOUT_FILENO)
+		else if (node->outfile != STDOUT_FILENO)
 		{
 			if (dup2(node->outfile, STDOUT_FILENO) == -1)
             printf("Error with output file\n");
 			close(node->outfile);
 		}
-		if (execve(node->full_path, node->full_cmd, data->envp) == -1)
+		else if (execve(node->full_path, node->full_cmd, data->envp) == -1)
 		{
 			printf("%s : command not found\n", node->full_cmd[0]);
 			exit (127);
@@ -123,7 +135,7 @@ void	ft_execute_commands(t_mini *data)
 	{
         while (data->nodes[0]->full_cmd[i])
 		    remove_quotes(data->nodes[0]->full_cmd[i++], 0);
-        if (execute_builtin(data->nodes[0]->full_cmd, data->envp))
+        if (execute_builtin(data->nodes[0]->full_cmd, data->envp) && data->nodes[0]->is_set == 1)
             execute_simple_command(data, data->nodes[0], pid);
 /*		if (is_builtin(data->nodes[0]->full_cmd[0])
 			&& data->nodes[0]->is_set)

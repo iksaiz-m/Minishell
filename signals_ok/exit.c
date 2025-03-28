@@ -34,7 +34,6 @@ int	ft_exit(t_mini *data, int flag)
 		{
 			printf("free %p\n", data->commands);
 			free_split(data->commands);
-			printf("\033[31mFin.\033[0m\n");
 			free(data);
 			exit(EXIT_SUCCESS);
 		}

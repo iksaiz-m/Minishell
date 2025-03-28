@@ -231,7 +231,7 @@ void handle_sigint(int sig)
 void handle_sigquit(int sig)
 {
     (void)sig;
-    printf("\b\b  \b\b"); // Borra "^\" que imprime Bash
+//    printf("\b\b  \b\b"); // Borra "^\" que imprime Bash
 }
 
 void setup_signals(void)
