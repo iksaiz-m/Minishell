@@ -105,13 +105,13 @@ void	execute_simple_command(t_mini *data, t_node *node, pid_t pid)
 				printf("Error with input file\n");
 			close(node->infile);
 		}
-		else if (node->outfile != STDOUT_FILENO)
+		if (node->outfile != STDOUT_FILENO)
 		{
 			if (dup2(node->outfile, STDOUT_FILENO) == -1)
             printf("Error with output file\n");
 			close(node->outfile);
 		}
-		else if (execve(node->full_path, node->full_cmd, data->envp) == -1)
+		if (execve(node->full_path, node->full_cmd, data->envp) == -1)
 		{
 			printf("%s : command not found\n", node->full_cmd[0]);
 			exit (127);
