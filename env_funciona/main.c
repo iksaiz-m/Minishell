@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 10:00:58 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/03/17 20:48:04 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/03/29 20:13:56 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,24 +69,17 @@ void	asignenvp(char **envp, t_prompt **data)
 {
 	t_prompt	*new;
 	t_prompt	*last;
-	char	**temp;
-	int		i;
+	int			i;
 
-	temp = split_env(envp);
-	if (!temp)
-	{
-        printf("Error: split_env devolvió NULL\n");
-        return;
-    }
 	new = NULL;
 	last = NULL;
 	i = 0;
-	while (temp[i])
+	while (envp[i])
 	{
 		new = malloc(sizeof(t_prompt));
 		if (!new)
 			return ;
-		new->envp = strdup(temp[i]);
+		new->envp = strdup(envp[i]);
 		new->next = NULL;
 		if (last == NULL)
 			*data = new;
@@ -95,7 +88,6 @@ void	asignenvp(char **envp, t_prompt **data)
 		last = new;
 		i++;
 	}
-	free(temp);
 }
 
 void	enterdata(char *line, t_mini *data)
@@ -126,18 +118,6 @@ int	exist(char *line)
 	return (0);
 }
 
-void	*ft_memset(void *b, int c, size_t len)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < len)
-	{
-		((unsigned char *) b)[i] = (unsigned char) c;
-		i++;
-	}
-	return (b);
-}
 void	init_data(t_mini **data, char **envp)
 {
 	t_mini	*addata;
@@ -147,7 +127,7 @@ void	init_data(t_mini **data, char **envp)
 		return ;
 	addata->env = NULL; //initialize structure
 	asignenvp(envp, &addata->env); //asign env to structure
-	*data = addata; //
+	*data = addata; //asign data to estructure
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -160,7 +140,6 @@ int	main(int argc, char **argv, char **envp)
 	print_logo();
 	// signal(SIGUSR1, signal_received);
 	// signal(SIGUSR2, signal_received);
-
 	init_data(&data, envp); //Initialize env variables
 	while (argc && argv)
 	{

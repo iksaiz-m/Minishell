@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 08:38:25 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/03/17 20:46:57 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/03/28 18:55:03 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,8 @@
 
 typedef struct s_prompt
 {
-	va_list *cmds;
-	// char **envp;
 	char *envp;
 	struct s_prompt *next;
-	pid_t pid;
 }		t_prompt;
 
 typedef struct s_mini
@@ -55,7 +52,12 @@ int		ft_strlen(char *s);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char	*ft_strjoin(char *s1, char *s2);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
-void printaddata(t_prompt *adddata);
+void 	printaddata(t_prompt *adddata);
+void	ft_lstadd_back(t_prompt **lst, t_prompt *new);
+t_prompt	*ft_lstlast(t_prompt *lst);
+t_prompt	*ft_lstnew(t_prompt *content);
+void ft_lstsort(t_prompt *lst, int swapped);
+void	asign_env_value(char *argv, t_prompt **data);
 
 //split.c
 char	**ft_split(char const *s, char c);
@@ -72,7 +74,7 @@ void	pwd(int argc);
 void	cd(int argc, char *av);
 // char	**unset(char **argv, char **envp);
 void	unset(char **argv, t_prompt **data);
-void	unset(char **argv, t_prompt **data);
+void	export(char **argv, t_prompt *data);
 
 //init_shell.c
 int		export_action(int argc, char **argv);
