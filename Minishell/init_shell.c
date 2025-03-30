@@ -192,7 +192,7 @@ int	other_actions(int argc, char **argv, t_mini **data)
 		echo(argv, 2);
 	else if (argc >= 1 && ft_strncmp(argv[0], "echo", 4) == 0 && !argv[0][4])
 		echo(argv, 1);
-	if (argc == 1 && ft_strncmp(argv[0], "cd", 2) == 0 && !argv[0][2])
+	else if (argc == 1 && ft_strncmp(argv[0], "cd", 2) == 0 && !argv[0][2])
 		cd(argc, argv[0]);
 	else if (argc == 2 && ft_strncmp(argv[0], "cd", 2) == 0 && !argv[0][2])
 		cd(argc, argv[1]);
@@ -213,7 +213,6 @@ int	execute_builtin(char **argv, t_prompt *env, t_mini **data)
 	argc = 0;
 	while (argv[argc] != NULL)
 		argc++;
-	printf("count->%i\n", argc);
 	flag = 0;
 	flag += fork_actions(argc, argv, flag, env);
 	flag += other_actions(argc, argv, data);
@@ -221,5 +220,5 @@ int	execute_builtin(char **argv, t_prompt *env, t_mini **data)
 	if (flag == 2)
 		return (1);
 //		printf("Command not found: %s\n", argv[0]);
-	return(0) ;
+	return(0);
 }

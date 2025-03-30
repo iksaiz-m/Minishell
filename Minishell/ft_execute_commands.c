@@ -94,7 +94,6 @@ void	excecute_pipe_sequence(t_mini *data, int pipefd[2])
 
 void	execute_simple_command(t_mini *data, t_node *node, pid_t pid)
 {
-	printf("cagoendios\n");
 	pid = fork();
 	if (pid == -1)
 		return ;
@@ -136,14 +135,13 @@ void	ft_execute_commands(t_mini *data)
 	// 	printf("%s\n", data->execute_envp[x]);
 	// 	x++;
 	// }
-	printf("valor is set %d\n", data->nodes[0]->is_set);
 //	mini->signal = 1;
 //	init_signals(&((*data).signal));
 	if (data->nbr_nodes == 1)
 	{
         while (data->nodes[0]->full_cmd[i])
 		    remove_quotes(data->nodes[0]->full_cmd[i++], 0);
-        if (execute_builtin(data->nodes[0]->full_cmd, data->env, &data) && data->nodes[0]->is_set == 1)
+        if (execute_builtin(data->nodes[0]->full_cmd, data->env, &data) == 1 && data->nodes[0]->is_set == 1)
             execute_simple_command(data, data->nodes[0], pid);
 /*		if (is_builtin(data->nodes[0]->full_cmd[0])
 			&& data->nodes[0]->is_set)

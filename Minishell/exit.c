@@ -22,11 +22,6 @@ int	ft_exit(t_mini *data, int flag)
 		printf("\033[31mFin.\033[0m\n");
 		exit(EXIT_SUCCESS);
 	}
-	while (data->commands[i])
-	{
-		printf("%i: %s\n", i, data->commands[i]);
-		i++;
-	}
 	if (data->splits <= 2)
 	{
 		if (ft_strncmp(data->commands[0], "exit", 4) == 0

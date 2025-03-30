@@ -38,7 +38,7 @@ char	**get_next_node(char **tmp, char ***next)
 	return (elements);
 }
 
-t_node	*ft_create_nodes_aux(char **commands)
+t_node	*ft_create_nodes_aux(char **commands, t_mini *data)
 {
 	t_node	*new;
 
@@ -48,8 +48,8 @@ t_node	*ft_create_nodes_aux(char **commands)
 	new->infile = STDIN_FILENO;
 	new->outfile = STDOUT_FILENO;
 	new->full_cmd = set_full_cmd(commands, 0, 0);
-    new->full_path = set_full_path(new);
-    //	new->full_path = set_full_path(new, mini->bin_path);
+//   new->full_path = set_full_path(new);
+	new->full_path = set_full_path(new, data->bin_path);
 	if (!set_infile_outfile(new, commands, STDOUT_FILENO, STDIN_FILENO))
 		new->is_set = 0;
 	else
@@ -74,7 +74,7 @@ t_node	**ft_create_nodes(t_mini *data)
 	while (data->ft_count_pipes >= 0)
 	{
 		tmp = get_next_node(tmp, &next);
-		nodes[i] = ft_create_nodes_aux(tmp);
+		nodes[i] = ft_create_nodes_aux(tmp, data);
 		tmp = next;
 		i++;
 		data->ft_count_pipes--;

@@ -69,61 +69,12 @@ char **copy_strings(char **commands, int start, int len)
 
 char **ft_strdup2(char **commands, int len, int first)
 {
-    int start_index = find_start_index(commands, first);
-    return copy_strings(commands, start_index, len);
+    int start_index;
+	
+	start_index = find_start_index(commands, first);
+    return (copy_strings(commands, start_index, len));
 }
-/*
-char	**ft_strdup2(char **commands, int len, int first)
-{
-	char	**str;
-	int		j;
-	int		i;
-	int		k;
-	int		v;
-	int		counter;
 
-	j = 0;
-	k = 0;
-	v = 0;
-	counter = 0;
-	if (first != 0)
-	{
-		while (commands[j])
-		{
-			if (ft_strncmp(commands[j], "|", 1) == 0)
-			{
-				counter++;
-				if (counter == first)
-					break;
-			}
-			j++;
-		}
-		j++;
-	}
-	str = (char **)malloc((len + 1)* sizeof(char *));
-	while (k <= len && commands[j])
-	{
-		i = 0;
-		while (commands[j][i])
-			i++;
-		str[k] = (char *)malloc((i + 1) * sizeof(char));
-		if (str[k])
-		{
-			v = 0;
-			while (v < i)
-			{
-				str[k][v] = commands[j][v];
-				v++;
-			}
-			str[k][v] = '\0';
-		}
-		k++;
-		j++;
-	}
-	str[len] = NULL;
-	return (str);
-}
-*/
 int	ft_len_to_pipe (char **commands, int flag, int start, int  first)
 {
 	int	len;
@@ -152,6 +103,6 @@ int	ft_count_pipes (char **commands)
 		if (ft_strncmp(commands[i], "|", 1) == 0)
 			count_pipes++;	
 		i++;
-	}printf("pipes: %i\n", count_pipes);
+	}
 	return (count_pipes);
 }	

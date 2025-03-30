@@ -109,7 +109,6 @@ static int	ft_sub_len(char const *s, char c)
 			break ;
 		i++;
 	}
-	printf("Valor i: %d\n", i);
 	return (i);
 }
 

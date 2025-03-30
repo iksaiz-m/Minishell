@@ -122,13 +122,15 @@ int	ft_len_to_pipe (char **commands, int flag, int start, int first);
 
 int	ft_prepare_nodes(t_mini *data);
 void	ft_execute_commands(t_mini *data);
-char	*set_full_path(t_node *node);
+char	*set_full_path(t_node *node, char **bin_path);
 char	**set_full_cmd(char **commands, int i, int cmd);
 int	set_infile_outfile(t_node *node, char **commands, int outfile, int infile);
 int	get_here_doc(char *str[2], char *aux[2]);
 void ft_clean(t_mini *data);
 int	check_pipe_redir(char *s, int i);
 char	*ft_strdup(const char *s1);
+void	set_bin_path(t_mini *data);
+int	is_builtin(char *str);
 
 extern int	g_status;
 

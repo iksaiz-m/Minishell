@@ -12,42 +12,44 @@
 
 #include "minishell.h"
 
-/*
+
 int	is_builtin(char *str)
 {
-	if (!ft_strncmp(str, "echo") || !ft_strncmp(str, "cd") || \
-	!ft_strncmp(str, "pwd") || !ft_strncmp(str, "export") || \
-	!ft_strncmp(str, "unset") || !ft_strncmp(str, "env") || \
-	!ft_strcmp(str, "exit"))
+	if (!ft_strncmp(str, "echo", 4) || !ft_strncmp(str, "cd", 2) || \
+	!ft_strncmp(str, "pwd", 3) || !ft_strncmp(str, "export", 6) || \
+	!ft_strncmp(str, "unset", 5) || !ft_strncmp(str, "env", 3) || \
+	!ft_strncmp(str, "exit", 4))
 		return (1);
 	return (0);
 }
-*/
-//char	*set_full_path(t_node *node, char **bin_path)
-char	*set_full_path(t_node *node)
-{
+
+/*char	*set_full_path(t_node *node)
 	char	*path;
 
     path = ft_strjoin("/usr/bin/", node->full_cmd[0]);
     if (access(path, X_OK) == 0)
-        return (path);
-/*	int		i;
+        return (path);*/
+char	*set_full_path(t_node *node, char **bin_path)
+{
+	char	*path;
+	int		i;
 
 	i = 0;
+	if (access(node->full_cmd[0], X_OK) == 0 && !is_builtin(node->full_cmd[0]))
+		return (node->full_cmd[0]);
 	if (bin_path && node->full_cmd && !is_builtin(node->full_cmd[0]))
 	{
 		while (bin_path[i] != NULL)
 		{
-			path = ft_strjoin(ft_strjoin(bin_path[i], "/", 2), node->full_cmd[0], 3);
+			path = ft_strjoin(ft_strjoin(bin_path[i], "/"), node->full_cmd[0]);
 			if (access(path, X_OK) == 0)
 				return (path);
 			free(path);
 			i++;
 		}
-		return (ft_strdup(node->full_cmd[0], 0));
+		return (ft_strdup(node->full_cmd[0]));
 	}
 	return (NULL);
-*/  return (NULL);
 }
 
 int	is_redirection(char *str)

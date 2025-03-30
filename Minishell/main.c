@@ -39,144 +39,23 @@ char	*ft_print_user(void)
 	a = "->";
 	pwd = getcwd(NULL, 0);
 	username = getenv("USER");
-	simbol = " \n> ";
+	simbol = " \n-> ";
 	a = ft_strjoin(username, a);
 	userwithpwd = ft_strjoin(username, pwd);
 	prompt = ft_strjoin(userwithpwd, simbol);
 	free(a);
 	free(pwd);
 	free(userwithpwd);
-	// printf("\033[37;44m%s\033[0m", username);
-	// printf("\033[32m %s\033[0m\n", pwd);
 	return (prompt);
 }
 
-// void	enter(char *line, char **envp, t_mini **data)
-// {
-// 	char	**commands;
-// 	int		splits;
-// 	t_mini *adddata;
-
-// 	// adddata = NULL;
-// 	adddata = malloc(sizeof (struct s_mini));
-// 	add_history(line);
-// 	adddata->envp = envp;
-// 	adddata->full_cmd = ft_split(line, ' ');
-// 	commands = ft_split(line, ' ');
-// 	adddata->splits = ft_count_splits(line, ' ');
-// 	splits = ft_count_splits(line, ' ');
-// 	init_shell(splits, commands, envp);
-// 	*data = adddata;
-// 	//init_shell(adddata->splits, adddata->full_cmd, adddata->envp);
-// 	free_split(commands);
-// 	//free_split(adddata->full_cmd);
-// }
-/*void	enter(t_mini *data)
-{
-	int		i;
-	char	**str;
-	int		len;
-	int		first;
-//	t_mini *current = *data;
-	
-	i = 0;
-	len = 0;
-	first = 0;
-	while (data->commands[i])
-		remove_quotes(data->commands[i++], 0);
-	i = 0;
-	while (data->ft_count_pipes >= 0)
-	{
-		printf("i calculado: %d\n", i);
-		len = ft_len_to_pipe(data->commands, data->ft_count_pipes, i, first);
-		printf("len calculado: %d\n", len);
-		str = ft_strdup2(data->commands, len, first);
-		if (init_shell(data->splits, str, data->envp))
-			not_builtin_command(str);
-		first++;
-		data->ft_count_pipes--;
-		i = i + len + 1;
-	}
-	free_split(data->commands);
-	free(data);
-}
-void	enter(t_mini *data)
-{
-	int		i;
-	char	**str;
-	int		len;
-	int		first;
-	int		fd[2]; // Pipe
-	int		prev_fd; // Para almacenar el fd[0] del pipe anterior
-	pid_t	pid;
-	
-	i = 0;
-	len = 0;
-	first = 0;
-	prev_fd = -1;
-	while (data->commands[i])
-		remove_quotes(data->commands[i++], 0);
-	i = 0;
-	while (data->ft_count_pipes >= 0)
-	{
-		len = ft_len_to_pipe(data->commands, data->ft_count_pipes, i, first);
-		str = ft_strdup2(data->commands, len, first);
-		
-		// Crear un pipe si hay más comandos
-		if (data->ft_count_pipes > 0 && pipe(fd) == -1)
-		{
-			perror("pipe");
-			exit(1);
-		}
-
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("fork");
-			exit(1);
-		}
-		if (pid == 0) // Proceso hijo
-		{
-			if (prev_fd != -1)
-			{
-				dup2(prev_fd, STDIN_FILENO); // Leer de la salida del comando anterior
-				close(prev_fd);
-			}
-			if (data->ft_count_pipes > 0)
-			{
-				dup2(fd[1], STDOUT_FILENO); // Escribir en el pipe
-				close(fd[0]); // Cerrar lectura en hijo
-			}
-			if (init_shell(data->splits, str, data->envp))
-				not_builtin_command(str, data->envp);
-			exit(0);
-		}
-		else // Proceso padre
-		{
-			wait(NULL); // Espera a que termine el hijo
-
-			if (prev_fd != -1)
-				close(prev_fd); // Cierra la lectura del pipe anterior
-
-			if (data->ft_count_pipes > 0)
-			{
-				close(fd[1]); // Cierra la escritura del pipe actual
-				prev_fd = fd[0]; // Guarda la lectura para el siguiente comando
-			}
-		}
-		first++;
-		data->ft_count_pipes--;
-		i = i + len + 1;
-	}
-	free_split(data->commands);
-	free(data);
-}
-*/
 int	ft_check_input(char *line)
 {
 	if (!detectopenquotes(line))
 		return (printf("syntax error: dquote\n"), 1);
 	if (!check_pipe_redir(line, 0))
+		return (1);
+	if (line[0] == '<' || line[0] == '>' || (line[0] == '>' && line[1] == '>'))
 		return (1);
 	return (0);
 }
@@ -186,12 +65,12 @@ void	enterdata(char *line, t_mini *data)
 	add_history(line);
 	if (!ft_check_input(line))
 	{
+		set_bin_path(data);
 		data->commands = ft_split(line, ' ');
 //		adddata->commands = look_for_expansion(adddata->commands);
 		data->ft_count_pipes = ft_count_pipes(data->commands);
 		data->splits = ft_count_splits(line, ' ');
 		data->nbr_nodes = ft_count_pipes (data->commands) + 1;
-		// data->execute_envp = 
 		ft_exit (data, 0);
 		if(!ft_prepare_nodes(data))
 			ft_execute_commands(data);
@@ -203,8 +82,6 @@ int	exist(char *line)
 	int	i;
 
 	i = 0;
-	if (line[0] == '<' || line[0] == '>' || (line[0] == '>' && line[1] == '>'))
-	return (0);
 	while (line[i])
 	{
 		if (line[i] != ' ' && line[i] != '\0')
@@ -223,17 +100,10 @@ void handle_sigint(int sig)
     rl_redisplay();        // Redibuja el prompt
 }
 
-void handle_sigquit(int sig)
-{
-    (void)sig;
-//    printf("\b\b  \b\b"); // Borra "^\" que imprime Bash
-}
-
 void setup_signals(void)
 {
     signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
-//	signal(SIGQUIT, handle_sigquit);
 }
 
 void	asignenvp(char **envp, t_prompt **data)
@@ -250,7 +120,7 @@ void	asignenvp(char **envp, t_prompt **data)
 		new = malloc(sizeof(t_prompt));
 		if (!new)
 			return ;
-		new->envp = strdup(envp[i]);
+		new->envp = ft_strdup(envp[i]);
 		new->next = NULL;
 		if (last == NULL)
 			*data = new;
