@@ -17,13 +17,22 @@ void	child_execution(t_mini *data, t_node *node)
     int i;
 
     i = 0;
+	t_mini	*temp_data;
+	
+	temp_data = data;
 //	if (!is_builtin(node->full_cmd[0])
 //		&& node->is_exec)
 //	{
-    while (node->full_cmd[i]){
+    while (node->full_cmd[i])
+	{
         remove_quotes(node->full_cmd[i++], 0);
     }
-	if (execve(node->full_path, node->full_cmd, data->execute_envp) == -1)
+	if (is_builtin(node->full_cmd[0]))
+	{
+		execute_builtin(node->full_cmd, data->env, &temp_data);
+		exit (127);
+	}
+	else if (execve(node->full_path, node->full_cmd, data->execute_envp) == -1)
 	{
 		printf("%s : comand not found\n", node->full_cmd[0]);
 		exit (127);

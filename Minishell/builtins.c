@@ -54,6 +54,7 @@ void	unset(char **argv, t_prompt **data)
 		remove_env(argv[i], &unset);
 		i++;
 	}
+	g_status = 0;
 }
 
 void	pwd(int argc)
@@ -68,6 +69,7 @@ void	pwd(int argc)
 	pwd = getcwd(NULL, 0);
 	printf("%s\n", pwd);
 	free(pwd);
+	g_status = 0;
 }
 
 void	cd(int argc, char *av)
@@ -80,9 +82,11 @@ void	cd(int argc, char *av)
 		path = av;
 	if (chdir(path) == -1)
 	{
+		g_status = 2;
 		perror("cd");
 		return ;
 	}
+	g_status = 0;
 }
 
 void	echo(char **av, int flag)
@@ -103,6 +107,7 @@ void	echo(char **av, int flag)
 	}
 	if (flag == 1)
 		printf("\n");
+	g_status = 0;
 }
 
 //  Para la comprobacion del -n o cosas asi en vez de usar ft_strlen comprobar que no haya siguiente

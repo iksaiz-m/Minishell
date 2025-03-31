@@ -31,7 +31,6 @@ char	*ft_print_user(void)
 {
 	char	*pwd;
 	char	*username;
-	char	*simbol;
 	char	*userwithpwd;
 	char	*prompt;
 	char	*a;
@@ -39,10 +38,9 @@ char	*ft_print_user(void)
 	a = "->";
 	pwd = getcwd(NULL, 0);
 	username = getenv("USER");
-	simbol = " \n-> ";
 	a = ft_strjoin(username, a);
 	userwithpwd = ft_strjoin(username, pwd);
-	prompt = ft_strjoin(userwithpwd, simbol);
+	prompt = ft_strjoin(userwithpwd, "-> ");
 	free(a);
 	free(pwd);
 	free(userwithpwd);
@@ -52,11 +50,11 @@ char	*ft_print_user(void)
 int	ft_check_input(char *line)
 {
 	if (!detectopenquotes(line))
-		return (printf("syntax error: dquote\n"), 1);
+		return (g_status = 2, printf("syntax error: dquote\n"), 1);
 	if (!check_pipe_redir(line, 0))
-		return (1);
+		return (g_status = 2, 1);
 	if (line[0] == '<' || line[0] == '>' || (line[0] == '>' && line[1] == '>'))
-		return (1);
+		return (g_status = 2, 1);
 	return (0);
 }
 
@@ -98,6 +96,7 @@ void handle_sigint(int sig)
     rl_on_new_line();      // Actualiza la línea de readline
     rl_replace_line("", 0);// Borra el contenido actual
     rl_redisplay();        // Redibuja el prompt
+	g_status = 130;
 }
 
 void setup_signals(void)
@@ -171,6 +170,7 @@ int	main(int argc, char **argv, char **envp)
 			write(1, "\0", 1);
 		if (exist(line))
 			enterdata(line, data);
+		printf("$->%d\n", g_status);
 	}
 	return (0);
 }

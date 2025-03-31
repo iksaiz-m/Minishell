@@ -93,6 +93,8 @@ int check_env_name(char *argv, int x)
 	char **var_name;
 
 	i = 0;
+	if (argv[0] == '=')
+		return (-1);
 	var_name = ft_split(argv, '=');
 	x = ft_is_equal_simbol(argv);
 	while (var_name[0][i])
@@ -148,13 +150,17 @@ int	fork_actions(int argc, char **argv, int flag, t_prompt *env)
 
 	i = 0;
 	if (argc == 1 && ft_strncmp(argv[0], "env", 3) == 0 && !argv[0][3])
+	{
 		printaddata(env);
+		g_status = 0;
+	}
 	else if (ft_strncmp(argv[0], "export", 6) == 0 && !argv[0][6] && !argv[1])
 	{
 		tmp = dup_env(env);
 		ft_lstsort(tmp, 1);
 		printaddata(tmp);
 		free(tmp);
+		g_status = 0;
 	}
 	else if ((ft_strncmp(argv[0], "export", 6) == 0 && !argv[0][6]) && argc > 1)
 	{
@@ -168,11 +174,12 @@ int	fork_actions(int argc, char **argv, int flag, t_prompt *env)
 				free(true_env);
 			}
 			else if (x == -1)
-				return (flag);
+				return (g_status = 2, flag);
 			else
 				asign_env_value(argv[i + 1], &env);
 			i++;
 		}
+		g_status = 0;
 	}
 		// export(argv, env);
 	else
@@ -192,14 +199,14 @@ int	other_actions(int argc, char **argv, t_mini **data)
 		echo(argv, 2);
 	else if (argc >= 1 && ft_strncmp(argv[0], "echo", 4) == 0 && !argv[0][4])
 		echo(argv, 1);
-	else if (argc == 1 && ft_strncmp(argv[0], "cd", 2) == 0 && !argv[0][2])
-		cd(argc, argv[0]);
-	else if (argc == 2 && ft_strncmp(argv[0], "cd", 2) == 0 && !argv[0][2])
-		cd(argc, argv[1]);
 	else if (ft_strncmp(argv[0], "pwd", 3) == 0 && !argv[0][3])
 		pwd(argc);
 	else if (ft_strncmp(argv[0], "unset", 5) == 0 && !argv[0][5])
 		unset(argv, &env->env);
+	else if (argc == 1 && ft_strncmp(argv[0], "cd", 2) == 0 && !argv[0][2])
+		cd(argc, argv[0]);
+	else if (argc == 2 && ft_strncmp(argv[0], "cd", 2) == 0 && !argv[0][2])
+		cd(argc, argv[1]);
 	else
 		flag = 1;
 	return (flag);
@@ -217,6 +224,7 @@ int	execute_builtin(char **argv, t_prompt *env, t_mini **data)
 	flag += fork_actions(argc, argv, flag, env);
 	flag += other_actions(argc, argv, data);
 	// flag += export_action(argc, argv);
+
 	if (flag == 2)
 		return (1);
 //		printf("Command not found: %s\n", argv[0]);
