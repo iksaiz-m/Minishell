@@ -131,7 +131,7 @@ int	check_pipe_redir(char *s, int i);
 char	*ft_strdup(const char *s1);
 void	set_bin_path(t_mini *data);
 int	is_builtin(char *str);
-void	ft_free_nodes(t_mini **data);
+void	ft_free_nodes(t_mini **data, int i);
 
 extern int	g_status;
 

@@ -13,10 +13,14 @@
 #include "minishell.h"
 
 
-void	ft_free_nodes(t_mini **data)
+void	ft_free_nodes(t_mini **data, int i)
 {
-	int		i;
-
+	while((*data)->commands[++i] != NULL)
+	{
+		if((*data)->commands[i] != NULL)
+			free((*data)->commands[i]);
+	}
+	free((*data)->commands);
 	i = -1;
 	while((*data)->nodes[++i] != NULL)
 	{
@@ -53,8 +57,8 @@ int	ft_exit(t_mini **data, int flag)
 		{
 	//		ft_free_nodes(&data);
 			printf("free %p\n", (*data)->commands);
-	//		free_split((*data)->commands);
-	//		free(data);
+//			free_split((*data)->commands);
+//			free(data);
 			exit(EXIT_SUCCESS);
 		}
 	}

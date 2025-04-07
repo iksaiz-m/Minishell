@@ -94,9 +94,9 @@ int	ft_check_input(char *line, int i)
 int	ft_more_checkers(char **commands)
 {
 	if (!check_wrong_redir(commands))
-		return(printf("syntax error: redir\n"), 1);
+		return(printf("syntax error: redir\n"),g_status = 2, 1);
 	else if (!check_wrong_pipes(commands))
-		return(printf("syntax error: pipes\n"), 1);
+		return(printf("syntax error: pipes\n"),g_status = 2, 1);
 	else
 		return (0);
 }
@@ -117,7 +117,7 @@ void	enterdata(char *line, t_mini *data)
 			set_bin_path(data);
 			if(!ft_prepare_nodes(data))
 				ft_execute_commands(data);
-			ft_free_nodes(&data);
+			ft_free_nodes(&data, -1);
 		}
 	}
 }
