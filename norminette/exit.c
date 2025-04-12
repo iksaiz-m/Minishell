@@ -18,6 +18,7 @@ void	ft_free_nodes(t_mini **data, int i)
 	{
 		if ((*data)->commands[i] != NULL)
 			free((*data)->commands[i]);
+			
 	}*/
 	//free((*data)->commands);
 	i = -1;
@@ -45,7 +46,7 @@ int	ft_exit(t_mini **data, int flag)
 	int	i;
 
 	i = 0;
-	//rl_clear_history();
+	rl_clear_history();
 	if (flag == 1)
 	{
 		printf("\033[31mExit\033[0m\n");

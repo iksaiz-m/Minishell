@@ -48,11 +48,14 @@ t_node	*ft_create_nodes_aux(char **commands, t_mini *data)
 	new->infile = STDIN_FILENO;
 	new->outfile = STDOUT_FILENO;
 	new->full_cmd = set_full_cmd(commands, 0, 0);
-	new->full_path = set_full_path(new, data->bin_path);
+	if (new->full_cmd != NULL)
+		new->full_path = set_full_path(new, data->bin_path);
 	if (!set_infile_outfile(new, commands, STDOUT_FILENO, STDIN_FILENO))
 		new->is_set = 0;
 	else
 		new->is_set = 1;
+	if (new->full_cmd == NULL)
+		new->is_set = 0;
 	new->n_pid = -1;
 	free(commands);
 	return (new);

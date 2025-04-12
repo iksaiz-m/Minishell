@@ -121,7 +121,7 @@ char		*ft_strdup(const char *s1);
 void		set_bin_path(t_mini *data);
 int			is_builtin(char *str);
 void		ft_free_nodes(t_mini **data, int i);
-char	*ft_create_temp(char *line, int i, int count, int j);
+char		*ft_create_temp(char *line, int i, int count, int j);
 
 extern int	g_status;
 

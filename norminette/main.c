@@ -69,14 +69,14 @@ char	*ft_create_temp(char *line, int i, int count, int j)
 
 int	ft_check_input(char *line, int i)
 {
-	char	*temp;
+//	char	*temp;
 
 	i = 0;
 	if (!detectopenquotes(line))
 		return (g_status = 2, printf("syntax error: dquote\n"), 1);
 	if (!check_pipe_redir(line, 0))
 		return (g_status = 2, 1);
-	if ((line[0] == '>' && line[1] == '>' && line[2] == ' ' )
+/*	if ((line[0] == '>' && line[1] == '>' && line[2] == ' ' )
 		|| (line[0] == '>' && line[1] == ' '))
 		temp = ft_create_temp(line, 0, 0, 0);
 	if (line[0] == '>' && line[1] == '>' && line[2] == ' ' )
@@ -87,7 +87,7 @@ int	ft_check_input(char *line, int i)
 			g_status = 0, 1);
 	if (line[0] == '<' && line[0] == '<')
 		return (printf("syntax error: redir\n"), g_status = 2, 1);
-	return (0);
+*/	return (0);
 }
 
 int	ft_more_checkers(char **commands)
@@ -288,7 +288,7 @@ int	main(int argc, char **argv, char **envp)
 			write(1, "\0", 1);
 		if (exist(line))
 			enterdata(line, data);
-		printf("$->%i\n", g_status);
+//		printf("$->%i\n", g_status);
 	}
 	return (0);
 }

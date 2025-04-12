@@ -19,6 +19,8 @@ void	child_execution(t_mini *data, t_node *node)
 
 	i = 0;
 	temp_data = data;
+	if (node->full_cmd == NULL)
+		exit (0);
 	while (node->full_cmd[i])
 	{
 		remove_quotes(node->full_cmd[i++], 0);
@@ -72,12 +74,12 @@ void	excecute_pipe_sequence(t_mini *data, int pipefd[2])
 	aux[1] = -1;
 	while (data->nodes[++aux[0]])
 	{
-		if (pipe(pipefd) == -1)
+		if (pipe(pipefd) == -1 || data->nodes[aux[0]]->full_cmd == NULL)
 			return ;
 		data->nodes[aux[0]]->n_pid = fork();
 		if (data->nodes[aux[0]]->n_pid == -1)
 			return ;
-		else if (data->nodes[aux[0]]->n_pid == 0 
+		else if (data->nodes[aux[0]]->n_pid == 0
 					&& data->nodes[aux[0]]->is_set == 1)
 			child_process(data, data->nodes[aux[0]], aux, pipefd);
 		else
@@ -156,7 +158,7 @@ void	ft_execute_commands(t_mini *data)
 
 	pid = 0;
 	i = 0;
-	if (data->nbr_nodes == 1)
+	if (data->nbr_nodes == 1 && data->nodes[0]->full_cmd != NULL)
 	{
 		while (data->nodes[0]->full_cmd[i])
 			remove_quotes(data->nodes[0]->full_cmd[i++], 0);
