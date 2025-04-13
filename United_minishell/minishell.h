@@ -73,12 +73,17 @@ t_prompt	*ft_lstnew(t_prompt *content);
 int			ft_isalpha(int c);
 int			ft_is_equal_simbol(char *argv);
 
+//utils3.c
+void		*ft_calloc(size_t count, size_t size);
+
 //split.c
 char		**ft_split(char const *s, char c);
-void		free_split(char **argv);
-int			ft_count_splits(char const *s, char c);
 char		**ft_splitquotes(char const *s, char c, char s_quote, char d_quote);
 size_t		ft_num_word(char const *s, char c, size_t i, size_t num_word);
+
+//split_utils.c
+void		free_split(char **argv);
+int			ft_count_splits(char const *s, char c);
 
 //builtins.c
 void		echo(char **av, int flag);
@@ -90,14 +95,20 @@ void		unset(char **argv, t_prompt **data);
 int			fork_actions(int argc, char **argv, int flag, t_prompt *env);
 int			other_actions(int argc, char **argv, t_mini **data);
 int			execute_builtin(char **argv, t_prompt *env, t_mini **data);
+
 //exit.c
 int			ft_exit(t_mini **data, int flag);
+
 //parse_imput.c
-/* int		parsequotes(t_mini *data);*/
 void		remove_quotes(char *imput, int i);
 int			detectopenquotes(char *line);
 int			check_wrong_pipes(char **commands);
 int			check_wrong_redir(char **commands);
+
+//more_parsing.c
+char		*prepare_line(char *line, int i, int j);
+int			ft_more_checkers(char **commands);
+int			ft_check_input(char *line);
 
 //commands.c
 void		not_builtin_command(char **data, char **env);
@@ -108,10 +119,17 @@ int			ft_count_pipes(char **commands);
 char		**ft_strdup2(char **commands, int len, int first);
 int			ft_len_to_pipe(char **commands, int flag, int start, int first);
 
+//ft_prepare_nodes.c
 int			ft_prepare_nodes(t_mini *data);
+
+//ft_execute_commands.c
 void		ft_execute_commands(t_mini *data);
+
+//sert_full_cmd_path.c
 char		*set_full_path(t_node *node, char **bin_path);
 char		**set_full_cmd(char **commands, int i, int cmd);
+
+//set_infile_outfile.c
 int			set_infile_outfile(t_node *node, char **commands, int outfile,
 				int infile);
 int			get_here_doc(char *str[2], char *aux[2]);
@@ -123,8 +141,29 @@ int			is_builtin(char *str);
 void		ft_free_nodes(t_mini **data, int i);
 char		*ft_create_temp(char *line, int i, int count, int j);
 
-char *expam(char *commands, t_prompt *env, int i);
-int	ft_check_dolars(char *line);
+//ft_execute_one_command.c
+void		prepare_builtin(t_mini *data, t_node *node);
+void		execute_simple_command(t_mini *data, t_node *node, pid_t pid);
+
+//env_parsed.c
+char		*vars(char *commands, t_prompt *env, int i, int x);
+char		*env_split(char const *s, int start);
+char		*ft_itoa(int n);
+
+//env_parsed2.c
+char		*ft_asign_rare_value(char *var_value);
+int			ft_check_dolar_length(char *line, int *j);
+int			ft_check_dolars(char *line);
+int			ft_check_for_quotes(char c, int *single_q, int *double_q, int *j);
+char		*ft_checkvar_value(char *var_value, t_prompt *env, int i);
+
+//signals.c
+void		setup_signals(void);
+void		handle_sigint(int sig);
+
+//ft_print_prompt.c
+void		print_logo(void);
+char		*ft_print_user(void);
 
 extern int	g_status;
 

@@ -14,14 +14,15 @@
 
 void	ft_free_nodes(t_mini **data, int i)
 {
-	/*while ((*data)->commands[++i] != NULL)
-	{
-		if ((*data)->commands[i] != NULL)
+	/*if ((*data)->commands != NULL)
+	{	
+		while ((*data)->commands[++i])
 			free((*data)->commands[i]);
-			
-	}*/
-	//free((*data)->commands);
-	i = -1;
+	}
+	//(*data)->commands = NULL;
+	if ((*data)->commands != NULL)
+		free((*data)->commands);
+	*/i = -1;
 	while ((*data)->nodes[++i] != NULL)
 	{
 		if ((*data)->nodes[i]->full_cmd != NULL)
@@ -38,7 +39,13 @@ void	ft_free_nodes(t_mini **data, int i)
 			free ((*data)->bin_path[i]);
 		free ((*data)->bin_path);
 	}
-	free((*data)->commands);
+/*	i = -1;
+	if ((*data)->commands != NULL)
+	{	
+		while ((*data)->commands[++i])
+			free((*data)->commands[i]);
+	}
+	free((*data)->commands);*/
 }
 
 int	ft_isdigit(int c)

@@ -12,19 +12,6 @@
 
 #include "minishell.h"
 
-/*void	check_heredoc(char *limit, int *infile)
-{
-	char	*aux[2];
-	char	*str[2];
-
-	str[0] = NULL;
-	str[1] = NULL;
-	aux[1] = "minishell: warning: here-document delimited by end-of-file";
-	aux[0] = limit;
-	*infile = get_here_doc(str, aux);
-	if (*infile == -1)
-		*infile = STDIN_FILENO;
-}*/
 void	check_heredoc(char *limit, int *infile)
 {
 	int		fd;
@@ -44,7 +31,7 @@ void	check_heredoc(char *limit, int *infile)
 	*infile = open(TEMP_FILE, O_RDONLY);
 }
 
-int	first_case_aux(char **commands, int *outfile, int i)
+int	create_outfile(char **commands, int *outfile, int i)
 {
 	if (*outfile != STDOUT_FILENO)
 		close(*outfile);
@@ -57,7 +44,7 @@ int	first_case_aux(char **commands, int *outfile, int i)
 	return (1);
 }
 
-int	second_case_aux(char **commands, int *outfile, int i)
+int	append_outfile(char **commands, int *outfile, int i)
 {
 	if (*outfile != STDOUT_FILENO)
 		close(*outfile);
@@ -70,7 +57,7 @@ int	second_case_aux(char **commands, int *outfile, int i)
 	return (1);
 }
 
-int	third_case_aux(char **commands, int *infile, int i)
+int	outfile_options(char **commands, int *infile, int i)
 {
 	if (ft_strncmp(commands[i - 1], "<<", 2))
 	{
@@ -103,18 +90,18 @@ int	set_infile_outfile(t_node *node, char **commands, int outfile, int infile)
 	{
 		if (!ft_strncmp(commands[i], ">>", 2) && commands[i + 1])
 		{
-			if (second_case_aux(commands, &outfile, ++i) == 0)
+			if (append_outfile(commands, &outfile, ++i) == 0)
 				return (0);
 		}
 		else if (!ft_strncmp(commands[i], ">", 1) && commands[i + 1])
 		{
-			if (first_case_aux(commands, &outfile, ++i) == 0)
+			if (create_outfile(commands, &outfile, ++i) == 0)
 				return (0);
 		}
 		else if ((!ft_strncmp(commands[i], "<", 1)
 				|| !ft_strncmp(commands[i], "<<", 2)) && commands[i + 1])
 		{
-			if (third_case_aux(commands, &infile, ++i) == 0)
+			if (outfile_options(commands, &infile, ++i) == 0)
 				return (0);
 		}
 	}

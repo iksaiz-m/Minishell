@@ -19,7 +19,9 @@ RM			= rm -rf
 CFILES = main.c split.c utils.c utils2.c builtins.c exit.c parse_imput.c\
 			ft_count_pipes.c ft_prepare_nodes.c ft_execute_commands.c\
 			set_full_cmd_path.c set_infile_outfile.c init_shell.c\
-			set_bin_path.c env_parsed.c
+			set_bin_path.c env_parsed.c split_utils.c env_parsed2.c\
+			utils3.c ft_execute_one_command.c signals.c more_parsing.c\
+			ft_print_prompt.c
 
 OFILES = $(CFILES:.c=.o)
 

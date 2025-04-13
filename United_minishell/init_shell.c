@@ -224,5 +224,5 @@ int	execute_builtin(char **argv, t_prompt *env, t_mini **data)
 	flag += other_actions(argc, argv, data);
 	if (flag == 2)
 		return (printf("%s : command not found\n", argv[0]), g_status = 127, 1);
-	return(0);
+	return (0);
 }
