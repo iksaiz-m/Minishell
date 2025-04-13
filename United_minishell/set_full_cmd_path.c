@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_full_cmd_path.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iboiraza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 11:35:40 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/03/28 11:35:41 by iboiraza         ###   ########.fr       */
+/*   Updated: 2025/04/13 19:54:03 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*set_full_path(t_node *node, char **bin_path)
 
 	i = 0;
 	if (access(node->full_cmd[0], X_OK) == 0 && !is_builtin(node->full_cmd[0]))
-		return (node->full_cmd[0]);
+		return (ft_strdup(node->full_cmd[0]));
 	if (bin_path && node->full_cmd && !is_builtin(node->full_cmd[0]))
 	{
 		while (bin_path[i] != NULL)

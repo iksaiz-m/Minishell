@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_parsed2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iboiraza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 13:03:53 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/04/13 13:04:07 by iboiraza         ###   ########.fr       */
+/*   Updated: 2025/04/13 18:48:50 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ char	*ft_checkvar_value(char *var_value, t_prompt *env, int i)
 		&& ft_strlen(var_value) == 1)
 		new_value = ft_asign_rare_value(var_value);
 	else
+	{
+		free(var_value);
 		return (ft_strdup("\"\""));
+	}
 	return (new_value);
 }
 

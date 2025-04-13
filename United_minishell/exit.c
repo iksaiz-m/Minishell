@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 20:48:06 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/03/30 19:26:06 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/04/13 20:11:47 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,21 @@
 
 void	ft_free_nodes(t_mini **data, int i)
 {
-	/*if ((*data)->commands != NULL)
-	{	
+	if ((*data)->commands != NULL)
+	{
 		while ((*data)->commands[++i])
 			free((*data)->commands[i]);
 	}
-	//(*data)->commands = NULL;
 	if ((*data)->commands != NULL)
 		free((*data)->commands);
-	*/i = -1;
+	i = -1;
+	if ((*data)->bin_path != NULL)
+	{
+		while ((*data)->bin_path[++i] != NULL)
+			free ((*data)->bin_path[i]);
+		free ((*data)->bin_path);
+	}
+	i = -1;
 	while ((*data)->nodes[++i] != NULL)
 	{
 		if ((*data)->nodes[i]->full_cmd != NULL)
@@ -32,53 +38,6 @@ void	ft_free_nodes(t_mini **data, int i)
 		free((*data)->nodes[i]);
 	}
 	free((*data)->nodes);
-	i = -1;
-	if ((*data)->bin_path != NULL)
-	{
-		while ((*data)->bin_path[++i] != NULL)
-			free ((*data)->bin_path[i]);
-		free ((*data)->bin_path);
-	}
-/*	i = -1;
-	if ((*data)->commands != NULL)
-	{	
-		while ((*data)->commands[++i])
-			free((*data)->commands[i]);
-	}
-	free((*data)->commands);*/
-}
-
-int	ft_isdigit(int c)
-{
-	if (c >= '0' && c <= '9')
-		return (c);
-	else
-		return (0);
-}
-
-int	ft_atoi(const char *str)
-{
-	int	i;
-	int	result;
-	int	b;
-
-	i = 0;
-	result = 0;
-	b = 0;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			b = 1;
-		i++;
-	}
-	while ((ft_isdigit(str[i])))
-	{
-		result = result * 10 +(str[i] - '0');
-		i++;
-	}
-	if (b == 1)
-		return (result * (-(1)));
-	return (result);
 }
 
 int	check_exit_num(char *exit_number)
@@ -86,7 +45,7 @@ int	check_exit_num(char *exit_number)
 	int	i;
 
 	i = 0;
-	while(exit_number[i])
+	while (exit_number[i])
 	{
 		if (exit_number[i] == '-' || exit_number[i] == '+')
 			i++;
@@ -96,7 +55,7 @@ int	check_exit_num(char *exit_number)
 			return (2);
 		}
 		else
-		i++;
+			i++;
 	}
 	return (ft_atoi(exit_number));
 }

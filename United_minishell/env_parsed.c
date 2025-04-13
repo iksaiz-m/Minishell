@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_parsed.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iboiraza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 22:29:18 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/04/12 22:29:32 by iboiraza         ###   ########.fr       */
+/*   Updated: 2025/04/13 18:51:05 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ char	*ft_reasign(char *var_value, char *commands, int *i, int vname_len)
 	ft_strlcpy(new_command + (len + *i -1), commands + (*i -1) + vname_len,
 		ft_strlen(commands) - (*i -1) - vname_len +1);
 	*i = *i - 1;
+	free(var_value);
 	return (new_command);
 }
 
@@ -104,7 +105,9 @@ char	*vars(char *commands, t_prompt *env, int i, int x)
 	int		s_quote;
 	int		d_quote;
 	char	*var_value;
+	char	*old_imput;
 
+	old_imput = commands;
 	s_quote = 0;
 	d_quote = 0;
 	while (commands[i] != '\0')
@@ -117,13 +120,11 @@ char	*vars(char *commands, t_prompt *env, int i, int x)
 		{
 			var_value = ft_get_var_value(commands, x, &i);
 			var_value = ft_checkvar_value(var_value, env, 0);
-			if (ft_reasign(var_value, commands, &i, (x + 1)) != NULL)
-				commands = ft_reasign(var_value, commands, &i, (x + 1));
-			else if (ft_reasign(var_value, commands, &i, (x + 1)) == NULL)
-				commands[i] = '\0';
+			commands = ft_reasign(var_value, commands, &i, (x + 1));
 		}
 		i++;
 		x = 0;
 	}
+	free(old_imput);
 	return (commands);
 }

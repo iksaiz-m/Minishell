@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 08:38:25 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/03/30 18:57:25 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/04/13 19:57:51 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,10 @@ int			ft_is_equal_simbol(char *argv);
 
 //utils3.c
 void		*ft_calloc(size_t count, size_t size);
+void		ft_free(char **a);
+void		ft_free_stack(t_prompt *a);
+int			ft_isdigit(int c);
+int			ft_atoi(const char *str);
 
 //split.c
 char		**ft_split(char const *s, char c);
@@ -91,6 +95,12 @@ void		pwd(int argc);
 void		cd(int argc, char *av);
 void		unset(char **argv, t_prompt **data);
 
+//builtins_utils.c
+void		ft_lscopy(t_prompt **list, char *content);
+void		ft_lstsort(t_prompt *lst, int swapped);
+t_prompt	*dup_env(t_prompt *original_env);
+int			check_env_name(char *argv, int x);
+void		asign_env_value(char *argv, t_prompt **data);
 //init_shell.c
 int			fork_actions(int argc, char **argv, int flag, t_prompt *env);
 int			other_actions(int argc, char **argv, t_mini **data);
