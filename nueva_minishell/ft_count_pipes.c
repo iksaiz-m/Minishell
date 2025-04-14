@@ -6,49 +6,77 @@
 /*   By: iboiraza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 08:37:47 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/02/27 08:40:05 by iboiraza         ###   ########.fr       */
+/*   Updated: 2025/04/07 14:31:59 by iboiraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int find_start_index(char **commands, int first)
+int	find_start_index(char **commands, int first)
 {
-    int j = 0;
-    int counter = 0;
+	int	j;
+	int	counter;
 
-    if (first != 0)
-    {
-        while (commands[j])
-        {
-            if (strncmp(commands[j], "|", 1) == 0)
-            {
-                counter++;
-                if (counter == first)
-                    break;
-            }
-            j++;
-        }
-        j++;
-    }
-    return j;
+	counter = 0;
+	j = 0;
+	if (first != 0)
+	{
+		while (commands[j])
+		{
+			if (strncmp(commands[j], "|", 1) == 0)
+			{
+				counter++;
+				if (counter == first)
+					break ;
+			}
+			j++;
+		}
+		j++;
+	}
+	return (j);
 }
 
-char **copy_strings(char **commands, int start, int len)
+char	**copy_strings(char **commands, int start, int len, int k)
+{
+	char	**str;
+	int		i;
+	int		v;
+	int		j;
+
+	j = start;
+	str = (char **)malloc((len + 1) * sizeof(char *));
+	while (k <= len && commands[j])
+	{
+		i = 0;
+		while (commands[j][i])
+			i++;
+		str[k] = (char *)malloc((i + 1) * sizeof(char));
+		if (str[k])
+		{
+			v = -1;
+			while (++v < i)
+				str[k][v] = commands[j][v];
+			str[k][v] = '\0';
+		}
+		k++;
+		j++;
+	}
+	str[len] = NULL;
+	return (str);
+}
+
+/*char **copy_strings(char **commands, int start, int len, int k)
 {
     char **str;
-    int k = 0, i, v, j = start;
+    int i, v, j = start;
 
     str = (char **)malloc((len + 1) * sizeof(char *));
     if (!str)
         return NULL;
-
     while (k <= len && commands[j])
     {
         i = 0;
-        while (commands[j][i])
-            i++;
-        
+        while (commands[j][i++])
         str[k] = (char *)malloc((i + 1) * sizeof(char));
         if (str[k])
         {
@@ -65,66 +93,17 @@ char **copy_strings(char **commands, int start, int len)
     }
     str[len] = NULL;
     return str;
-}
+}*/
 
-char **ft_strdup2(char **commands, int len, int first)
-{
-    int start_index = find_start_index(commands, first);
-    return copy_strings(commands, start_index, len);
-}
-/*
 char	**ft_strdup2(char **commands, int len, int first)
 {
-	char	**str;
-	int		j;
-	int		i;
-	int		k;
-	int		v;
-	int		counter;
+	int	start_index;
 
-	j = 0;
-	k = 0;
-	v = 0;
-	counter = 0;
-	if (first != 0)
-	{
-		while (commands[j])
-		{
-			if (ft_strncmp(commands[j], "|", 1) == 0)
-			{
-				counter++;
-				if (counter == first)
-					break;
-			}
-			j++;
-		}
-		j++;
-	}
-	str = (char **)malloc((len + 1)* sizeof(char *));
-	while (k <= len && commands[j])
-	{
-		i = 0;
-		while (commands[j][i])
-			i++;
-		str[k] = (char *)malloc((i + 1) * sizeof(char));
-		if (str[k])
-		{
-			v = 0;
-			while (v < i)
-			{
-				str[k][v] = commands[j][v];
-				v++;
-			}
-			str[k][v] = '\0';
-		}
-		k++;
-		j++;
-	}
-	str[len] = NULL;
-	return (str);
+	start_index = find_start_index(commands, first);
+	return (copy_strings(commands, start_index, len, 0));
 }
-*/
-int	ft_len_to_pipe (char **commands, int flag, int start, int  first)
+
+int	ft_len_to_pipe(char **commands, int flag, int start, int first)
 {
 	int	len;
 
@@ -132,7 +111,7 @@ int	ft_len_to_pipe (char **commands, int flag, int start, int  first)
 	while (commands[len])
 	{
 		if (flag != 0 && ft_strncmp(commands[len], "|", 1) == 0)
-			break;
+			break ;
 		len++;
 	}
 	if (first == 0)
@@ -140,7 +119,7 @@ int	ft_len_to_pipe (char **commands, int flag, int start, int  first)
 	return (len - start);
 }
 
-int	ft_count_pipes (char **commands)
+int	ft_count_pipes(char **commands)
 {
 	int			i;
 	int			count_pipes;
@@ -150,8 +129,8 @@ int	ft_count_pipes (char **commands)
 	while (commands[i])
 	{
 		if (ft_strncmp(commands[i], "|", 1) == 0)
-			count_pipes++;	
+			count_pipes++;
 		i++;
-	}printf("pipes: %i\n", count_pipes);
+	}
 	return (count_pipes);
-}	
+}

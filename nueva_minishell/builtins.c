@@ -6,18 +6,50 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:04:02 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/02/23 20:21:33 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/03/30 19:40:39 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	unset(char *argv)
+void	remove_env(char *argv, t_prompt **data)
 {
-	char *unset;
-	unset = getenv(argv);
-	unset = NULL;
-	// getenv(argv) = NULL;
+	t_prompt	*tmp;
+	t_prompt	*var;
+
+	var = NULL;
+	tmp = *data;
+	while (tmp)
+	{
+		if (ft_strncmp(argv, tmp->envp, ft_strlen(argv)) == 0
+			&& tmp->envp[ft_strlen(argv)] == '=')
+		{
+			if (var == NULL)
+			{
+				*data = tmp->next;
+			}
+			else
+				var->next = tmp->next;
+			free(tmp->envp);
+			free(tmp);
+			return ;
+		}
+		var = tmp;
+		tmp = tmp->next;
+	}
+}
+
+void	unset(char **argv, t_prompt **data)
+{
+	int	i;
+
+	i = 1;
+	while (argv[i])
+	{
+		remove_env(argv[i], data);
+		i++;
+	}
+	g_status = 0;
 }
 
 void	pwd(int argc)
@@ -32,6 +64,7 @@ void	pwd(int argc)
 	pwd = getcwd(NULL, 0);
 	printf("%s\n", pwd);
 	free(pwd);
+	g_status = 0;
 }
 
 void	cd(int argc, char *av)
@@ -44,9 +77,11 @@ void	cd(int argc, char *av)
 		path = av;
 	if (chdir(path) == -1)
 	{
+		g_status = 1;
 		perror("cd");
 		return ;
 	}
+	g_status = 0;
 }
 
 void	echo(char **av, int flag)
@@ -67,7 +102,5 @@ void	echo(char **av, int flag)
 	}
 	if (flag == 1)
 		printf("\n");
+	g_status = 0;
 }
-
-//  Para la comprobacion del -n o cosas asi en vez de usar ft_strlen comprobar que no haya siguiente
-//	while (av[i] && ft_strncmp(av[i], "-n", 2) == 0 && !av[i][3])

@@ -12,6 +12,83 @@
 
 #include "minishell.h"
 
+int	check_pipe_redir(char *s, int i)
+{
+	while (s[i] != '\0')
+	{
+		if (s[i] == '|' && s[i + 1] == '|')
+			return (printf("syntax error: pipes\n"), 0);
+		else if (s[i] == '>' && (s[i + 1] == '<' || (s[i + 1] == '>'
+					&& s[i + 2] == '>' && s[i + 3] != '>')))
+			return (printf("syntax error: redir\n"), 0);
+		else if (s[i] == '<' && (s[i + 1] == '>' || (s[i + 1] == '<'
+					&& s[i + 2] == '<' && s[i + 3] != '<')))
+			return (printf("syntax error: redir\n"), 0);
+		else if (s[i] == '>' && s[i + 1] == '>' && s[i + 2] == '>'
+			&& s[i + 3] == '>')
+			return (printf("syntax error: redir\n"), 0);
+		else if (s[i] == '<' && s[i + 1] == '<' && s[i + 2] == '<'
+			&& s[i + 3] == '<')
+			return (printf("syntax error: redir\n"), 0);
+		else if (s[i] == '<' && s[i + 1] == '|')
+			return (printf("syntax error: redir\n"), 0);
+		else if (s[i] == '>' && s[i + 1] == '|')
+			return (printf("syntax error: redir\n"), 0);
+		i++;
+	}
+	return (1);
+}
+
+int	check_wrong_pipes(char **commands)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (commands[i] != NULL)
+	{
+		if (!ft_strncmp(commands[i], "|", 1))
+		{
+			count++;
+			if (i == 0 || commands[i + 1] == NULL || \
+				!ft_strncmp(commands[i - 1], "<", 1) || \
+				!ft_strncmp(commands[i - 1], "<<", 2) || \
+				!ft_strncmp(commands[i - 1], ">", 1) || \
+				!ft_strncmp(commands[i - 1], ">>", 2) || \
+				!ft_strncmp(commands[i - 1], "|", 1))
+				return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
+int	check_wrong_redir(char **commands)
+{
+	int	i;
+
+	i = 0;
+	while (commands[i] != NULL)
+	{
+		if (commands[i + 1] && (!ft_strncmp(commands[i], "<", 1)
+				|| !ft_strncmp(commands[i], "<<", 2)
+				|| !ft_strncmp(commands[i], ">", 1)
+				|| !ft_strncmp(commands[i], ">>", 2))
+			&& (!ft_strncmp(commands[i + 1], "<", 1)
+				|| !ft_strncmp(commands[i + 1], "<<", 2)
+				|| !ft_strncmp(commands[i + 1], ">", 1)
+				|| !ft_strncmp(commands[i + 1], ">>", 2)))
+			return (0);
+		i++;
+	}
+	if (i != 0 && (!ft_strncmp(commands[i - 1], "<", 1)
+			|| !ft_strncmp(commands[i - 1], "<<", 2)
+			|| !ft_strncmp(commands[i - 1], ">", 1)
+			|| !ft_strncmp(commands[i - 1], ">>", 2)))
+		return (0);
+	return (1);
+}
 
 int	detectopenquotes(char *line)
 {

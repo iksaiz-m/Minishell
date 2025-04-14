@@ -6,125 +6,127 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:11:59 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/02/14 19:51:50 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/04/13 18:54:31 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	export_action(int argc, char **argv)
+void	printaddata(t_prompt *adddata, int flag)
 {
-	char	var_name[128];
-	int		var_value[128];
-	int		i;
-	int		flag;
-
-	flag = 0;
-	i = 0;
-	if (argc == 0)
-		printf("h\n");
-	if (ft_strncmp(argv[0], "export", 7) == 0)
+	if (flag == 1)
 	{
-		while (argv[1][i++] != '=')
-			var_name[i] = argv[1][i];
-		i++;
-		while (argv[1][i++])
-			var_value[i] = argv[1][i];
-		printf ("%s=%ls\n", var_name, var_value);
+		while (adddata)
+		{
+			printf("declare -x %s\n", adddata->envp);
+			adddata = adddata->next;
+		}
 	}
-	else
-		flag = 1;
-	return (flag);
+	else if (flag == 0)
+	{
+		while (adddata)
+		{
+			printf("%s\n", adddata->envp);
+			adddata = adddata->next;
+		}
+	}
 }
 
-int	fork_actions(int argc, char **argv, char **envp, int flag)
+int	export(int argc, char **argv, int flag, t_prompt *env)
 {
-	//pid_t	pid;
-	//char	*path;
-	int		i;
-	int		j;
+	int			i;
+	int			x;
+	char		*true_env;
 
 	i = 0;
-	/*if ((ft_strncmp(argv[0], "ls", 2) == 0 && !argv[0][2])
-		|| (ft_strncmp(argv[0], "/bin/ls", 7) == 0 && !argv[0][7]))
+	if ((ft_strncmp(argv[0], "export", 6) == 0 && !argv[0][6]) && argc > 1)
 	{
-		pid = fork();
-		if (pid == 0)
+		while (argv[i + 1])
 		{
-			path = "/usr/bin/ls";
-			execv(path, &argv[0]);
-			exit(0);
-		}
-		wait(NULL);
-	}*/
-	if (argc == 1 && ft_strncmp(argv[0], "env", 3) == 0 && !argv[0][3])
-	{
-		while (envp[i])
-		{
-			j = 0;
-			while (envp[i][j])
+			x = check_env_name(argv[i + 1], 0);
+			if (x == 0)
 			{
-				write(1, &envp[i][j], 1);
-				j++;
+				true_env = ft_strjoin(argv[i + 1], "=");
+				asign_env_value(true_env, &env);
+				free(true_env);
 			}
-			printf("\n");
+			else if (x == -1)
+				return (g_status = 1, flag);
+			else
+				asign_env_value(argv[i + 1], &env);
 			i++;
 		}
+		g_status = 0;
 	}
-	else if (argc >= 1 && ft_strncmp(argv[0], "export", 6) == 0 && !argv[0][6])
+	return (flag);
+}
+
+int	fork_actions(int argc, char **argv, int flag, t_prompt *env)
+{
+	t_prompt	*tmp;
+
+	if (argc == 1 && ft_strncmp(argv[0], "env", 3) == 0 && !argv[0][3])
 	{
-	 	while (envp[i])
-	 	{
-	 		j = 0;
-	 		while(envp[i][j])
-	 		{
-	 			write(1, &envp[i][j], 1);
-	 			j++;
-	 		}
-	 		printf("\n");
-	 		i++;
-	 	}
-	 }
+		printaddata(env, 0);
+		g_status = 0;
+	}
+	else if ((argc != 1 && ft_strncmp(argv[0], "env", 3) == 0 && !argv[0][3]))
+	{
+		printf("env: ‘%s’: not accepted\n", argv[1]);
+		g_status = 127;
+	}
+	else if (ft_strncmp(argv[0], "export", 6) == 0 && !argv[0][6] && !argv[1])
+	{
+		tmp = dup_env(env);
+		ft_lstsort(tmp, 1);
+		printaddata(tmp, 1);
+		ft_free_stack(tmp);
+		g_status = 0;
+	}
+	else if ((ft_strncmp(argv[0], "export", 6) == 0 && !argv[0][6]) && argc > 1)
+		flag = export(argc, argv, flag, env);
 	else
 		flag = 1;
 	return (flag);
 }
 
-int	other_actions(int argc, char **argv)
+int	other_actions(int argc, char **argv, t_mini **data)
 {
-	int	flag;
+	int		flag;
+	t_mini	*env;
 
+	env = *data;
 	flag = 0;
 	if (argc > 1 && ft_strncmp(argv[0], "echo", 4) == 0 && !argv[0][4]
 		&& ft_strncmp(argv[1], "-n", 2) == 0 && !argv[1][2])
 		echo(argv, 2);
 	else if (argc >= 1 && ft_strncmp(argv[0], "echo", 4) == 0 && !argv[0][4])
 		echo(argv, 1);
+	else if (ft_strncmp(argv[0], "pwd", 3) == 0 && !argv[0][3])
+		pwd(argc);
+	else if (ft_strncmp(argv[0], "unset", 5) == 0 && !argv[0][5])
+		unset(argv, &env->env);
 	else if (argc == 1 && ft_strncmp(argv[0], "cd", 2) == 0 && !argv[0][2])
 		cd(argc, argv[0]);
 	else if (argc == 2 && ft_strncmp(argv[0], "cd", 2) == 0 && !argv[0][2])
 		cd(argc, argv[1]);
-	else if (ft_strncmp(argv[0], "pwd", 3) == 0 && !argv[0][3])
-		pwd(argc);
-	else if (ft_strncmp(argv[0], "unset", 5) == 0 && !argv[0][5])
-		unset(argv[1]);
 	else
 		flag = 1;
 	return (flag);
 }
 
-int	init_shell(int argc, char **argv, char **envp)
+int	execute_builtin(char **argv, t_prompt *env, t_mini **data)
 {
 	int	flag;
+	int	argc;
 
-	if (!envp)
-		printf("ok\n");
+	argc = 0;
+	while (argv[argc] != NULL)
+		argc++;
 	flag = 0;
-	flag += fork_actions(argc, argv, envp, flag);
-	flag += other_actions(argc, argv);
-	flag += export_action(argc, argv);
-	if (flag == 3)
-		return (1);
-//		printf("Command not found: %s\n", argv[0]);
-	return(0) ;
+	flag += fork_actions(argc, argv, flag, env);
+	flag += other_actions(argc, argv, data);
+	if (flag == 2)
+		return (printf("%s : command not found\n", argv[0]), g_status = 127, 1);
+	return (0);
 }
