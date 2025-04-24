@@ -6,18 +6,18 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:42:05 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/04/24 18:53:02 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/04/24 20:11:10 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_isascii(int c)
+int	ft_isalpha(int c)
 {
-	if (c >= 0 && c <= 0177)
-		return (1);
-	else
+	if ((c < 'a' || c > 'z')
+		&& (c < 'A' || c > 'Z') && c != '_')
 		return (0);
+	return (1);
 }
 
 t_prompt	*ft_lstlast(t_prompt *lst)

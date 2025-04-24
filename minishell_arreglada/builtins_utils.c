@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 17:44:06 by iksaiz-m          #+#    #+#             */
-/*   Updated: 2025/04/24 18:56:45 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/04/24 20:11:28 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	check_env_name(char *argv, int x)
 		return (-1);
 	while (var_name[0][i])
 	{
-		if (!ft_isascii(var_name[0][i]))
+		if (!ft_isalpha(var_name[0][i]))
 		{
 			printf("not valid in this context:\n");
 			ft_free(var_name);
