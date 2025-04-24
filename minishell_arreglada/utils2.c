@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iboiraza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:42:05 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/04/12 21:42:26 by iboiraza         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:53:02 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_isalpha(int c)
+int	ft_isascii(int c)
 {
-	if ((c < 'a' || c > 'z')
-		&& (c < 'A' || c > 'Z'))
+	if (c >= 0 && c <= 0177)
+		return (1);
+	else
 		return (0);
-	return (1);
 }
 
 t_prompt	*ft_lstlast(t_prompt *lst)

@@ -6,7 +6,7 @@
 /*   By: iksaiz-m <iksaiz-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 08:38:25 by iboiraza          #+#    #+#             */
-/*   Updated: 2025/04/13 19:57:51 by iksaiz-m         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:53:17 by iksaiz-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void		ft_lstadd_back(t_prompt **lst, t_prompt *new);
 t_prompt	*ft_lstlast(t_prompt *lst);
 t_prompt	*ft_lstnew(t_prompt *content);
 int			ft_isalpha(int c);
+int			ft_isascii(int c);
 int			ft_is_equal_simbol(char *argv);
 
 //utils3.c
